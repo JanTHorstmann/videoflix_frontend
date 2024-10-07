@@ -1,0 +1,13 @@
+
+
+@mixin display-align-justify($d:flex, $a:center, $j:center) {
+    display: $d;
+    align-items: $a;
+    justify-content: $j;
+}
+
+@mixin font-size-color($fs:18px, $fc:#ffffff, $fw: 400) {
+    font-size: $fs;
+    color: $fc;
+    font-weight: $fw;
+}

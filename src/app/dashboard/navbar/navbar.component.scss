@@ -1,0 +1,11 @@
+@import '../../../mixin.scss';
+
+.navbar {
+    height: 108px;
+    // width: 100%;
+    @include display-align-justify($j:left);
+    padding-left: 96px;
+    // position: absolute;
+    // top: 0;
+
+}
