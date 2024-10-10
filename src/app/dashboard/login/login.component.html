@@ -1,15 +1,37 @@
-
 <app-navbar></app-navbar>
 <div class="main-site">
-    
+
     <div class="content">
         <h1>Log in</h1>
-        <form action="">
-            <input type="text" name="email" placeholder="Email Address">
-            <label for="email">Email don`t excist!</label>
-            <input type="password" name="password" placeholder="Password">
-            <label for="password">Password is incorrect!</label>
+        <form (submit)="login()">
+            <div class="form-inputs">
+                <input type="text" name="email" placeholder="Email Address">
+                <div class="laber-container">
+                    <label for="email" class="d-none"><img src="assets/img/warning.png">Email don`t excist!</label>
+                </div>
+                <input type="password" name="password" placeholder="Password">
+                <div class="laber-container">
+                    <label for="password" class="d-none"><img src="assets/img/warning.png">Password is incorrect!</label>
+                </div>                
+                    <div class="remember-me">
+                    <input type="checkbox" name="remember-me">
+                    <span>Remember me</span>
+                </div>
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit">Log in</button>
+                <a href="#">Forgot password?</a>
+                <div class="signup">
+                    <span>New to Videoflix?</span>
+                    <a href="#">Sign Up now</a>
+                </div>
+            </div>
         </form>
-        
+    </div>
+
+    <div class="guidelines">
+        <a href="">Datenschutz</a>
+        <a href="">Impressum</a>
     </div>
 </div>

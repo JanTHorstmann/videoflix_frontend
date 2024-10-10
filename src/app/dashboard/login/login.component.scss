@@ -8,12 +8,13 @@
     height: 100vh;
     width: 100%;
     @include display-align-justify();
+    flex-direction: column;
 }
 
 .content {
     background-color: #ffffff;
-    height: 50vh;
-    width: 30%;
+    height: 505px;
+    width: 520px;
     padding: 30px 0;
     border-radius: 48px;
     @include display-align-justify($j: unset);
@@ -25,24 +26,115 @@
     }
 
     form {
-        @include display-align-justify($a: left);
-        flex-direction: column;
-        gap: 10px;
-        width: 70%;
 
-        input {
-            border: 1px solid #2e3edf;
-            border-radius: 12px;
-            padding: 12px 24px;
-            @include font-size-color($fc: #2E3EDF);
+        // width: 70%;
+        .form-inputs {
+            @include display-align-justify($a: left);
+            flex-direction: column;
+            gap: 16px;
 
-            &::placeholder {
+
+            input {
+                border: 1px solid #2e3edf;
+                border-radius: 12px;
+                padding: 12px 24px;
                 @include font-size-color($fc: #2E3EDF);
+
+                &::placeholder {
+                    @include font-size-color($fc: #2E3EDF);
+                }
+
+                &:hover {
+                    border: 1px solid #2e3edf99;
+                }
+
+                &:focus-visible {
+                    outline: 1px solid rgba(46, 62, 223, 0.8);
+
+                }
+            }
+
+            .laber-container {
+                height: 21px;
+                margin: -16px 0 -9px 0;
+
+                label {
+                    @include font-size-color($fs: 16px, $fc: #FF002E);
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                }
+            }
+
+            .remember-me {
+                margin-top: -8px;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+
+                input {
+                    cursor: pointer;
+                }
+
+                span {
+                    @include font-size-color($fs: 16px, $fc: #000000);
+                }
             }
         }
 
-        label {
-            padding-left: 24px;
+        .form-buttons {
+            padding-top: 20px;
+            width: 100%;
+            @include display-align-justify();
+            flex-direction: column;
+            gap: 16px;
+
+            button {
+                cursor: pointer;
+                background-color: #2E3EDF;
+                padding: 12px 24px;
+                border: none;
+                border-radius: 40px;
+                @include font-size-color($fs: 18px, $fw: 700);
+
+                &:hover {
+                    background-color: #2e3edf99;
+                }
+            }
+
+            a {
+                @include font-size-color($fs: 18px, $fw: 700, $fc: #2E3EDF);
+                text-decoration: none;
+
+                &:hover {
+                    color: #2e3edf99;
+                }
+            }
+
+            .signup {
+                @include display-align-justify();
+                gap: 24px;
+
+                span {
+                    @include font-size-color($fw: 500, $fc: #000000);
+                }
+            }
+        }
+    }
+}
+
+.guidelines {
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    gap: 48px;
+
+    a {
+        @include font-size-color($fw: 500);
+        text-decoration: none;
+
+        &:hover {
+            color: #ffffff80;
         }
     }
 }
@@ -50,4 +142,11 @@
 app-navbar {
     position: absolute;
     top: 0;
+}
+
+@media (max-width: 550px) {
+    .content {
+        height: 50vh;
+        width: 90%;
+    }
 }

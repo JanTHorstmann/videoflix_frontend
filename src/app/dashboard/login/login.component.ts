@@ -11,4 +11,8 @@ import { NavbarComponent } from '../navbar/navbar.component';
 })
 export class LoginComponent {
 
+
+  login() {
+    console.log('Log in!!')
+  }
 }
