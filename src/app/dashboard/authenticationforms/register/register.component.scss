@@ -32,11 +32,12 @@
         gap: 32px;
         height: 100%;
         width: 100%;
+
         .form-inputs {
             @include display-align-justify($a: unset);
             flex-direction: column;
             gap: 16px;
-            width: 100%;
+            width: 100%;            
 
 
             input {
@@ -62,6 +63,7 @@
             .laber-container {
                 height: 21px;
                 margin: -16px 0 -9px 0;
+                position: relative;
 
                 label {
                     @include font-size-color($fs: 16px, $fc: #FF002E);
@@ -69,20 +71,12 @@
                     align-items: center;
                     gap: 4px;
                 }
-            }
 
-            .remember-me {
-                margin-top: -8px;
-                display: flex;
-                align-items: center;
-                gap: 4px;
-
-                input {
+                img {
                     cursor: pointer;
-                }
-
-                span {
-                    @include font-size-color($fs: 16px, $fc: #000000);
+                    position: absolute;
+                    right: 10px;
+                    top: -35.5px;
                 }
             }
         }
@@ -105,25 +99,7 @@
                 &:hover {
                     background-color: #2e3edf99;
                 }
-            }
-
-            a {
-                @include font-size-color($fs: 18px, $fw: 700, $fc: #2E3EDF);
-                text-decoration: none;
-
-                &:hover {
-                    color: #2e3edf99;
-                }
-            }
-
-            .signup {
-                @include display-align-justify();
-                gap: 24px;
-
-                span {
-                    @include font-size-color($fw: 500, $fc: #000000);
-                }
-            }
+            }            
         }
     }
 }

@@ -18,15 +18,14 @@ export class LoginComponent {
     console.log('Log in!!')
   }
 
-  passwordType: string = 'password';  // Setzt den initialen Typ auf "password"
-  passwordIcon: string = 'eye-off';   // Setzt das initiale Icon auf "eye-off"
-  placeholderPassword: string = 'Password';
+  passwordType: string = 'password';
+  passwordSrc: string = 'assets/img/eye.png';
 
   togglePasswordVisibility() {
     // Umschalten zwischen Passwort-Anzeige und normaler Textanzeige
     this.passwordType = this.passwordType === 'password' ? 'text' : 'password';
 
     // Icon ändern je nach Sichtbarkeit des Passworts
-    this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
+    this.passwordSrc = this.passwordSrc === 'assets/img/eye-off.png' ? 'assets/img/eye.png' : 'assets/img/eye-off.png';
   }
 }

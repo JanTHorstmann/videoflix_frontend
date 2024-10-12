@@ -12,6 +12,7 @@
                 <input [type]="passwordType" name="password" placeholder="Password">
                 <div class="laber-container">
                     <label for="password" class="d-none"><img src="assets/img/warning.png">Password is incorrect!</label>
+                    <img [src]="passwordSrc" alt="" (click)="togglePasswordVisibility()">
                 </div>                
                     <div class="remember-me">
                     <input type="checkbox" name="remember-me">

@@ -63,12 +63,20 @@
             .laber-container {
                 height: 21px;
                 margin: -16px 0 -9px 0;
+                position: relative;
 
                 label {
                     @include font-size-color($fs: 16px, $fc: #FF002E);
                     display: flex;
                     align-items: center;
                     gap: 4px;
+                }
+
+                img {
+                    cursor: pointer;
+                    position: absolute;
+                    right: 10px;
+                    top: -35.5px;
                 }
             }
 
