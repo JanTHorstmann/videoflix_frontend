@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 })
 export class LoginComponent {
 
+  navbarButton: string = 'display: none;'
 
   login() {
     console.log('Log in!!')

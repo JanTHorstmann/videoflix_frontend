@@ -12,3 +12,7 @@ h1, h2, h3, h4 {
 .d-none {
     display: none !important;
 }
+
+app-navbar {
+    width: calc(100% - 192px);
+}

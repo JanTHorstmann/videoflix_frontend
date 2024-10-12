@@ -2,10 +2,23 @@
 
 .navbar {
     height: 108px;
-    // width: 100%;
-    @include display-align-justify($j:left);
-    padding-left: 96px;
-    // position: absolute;
-    // top: 0;
+    width: 100%;
+    @include display-align-justify($j:space-between);
+    padding: 10px 96px;
+
+    
+        button {
+            cursor: pointer;
+            background-color: #2E3EDF;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 40px;
+            @include font-size-color($fs: 18px, $fw: 700);
+
+            &:hover {
+                background-color: #2e3edf99;
+            }
+        }
+    
 
 }

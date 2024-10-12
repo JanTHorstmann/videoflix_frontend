@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 
 @Component({
@@ -10,4 +10,9 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
 
+  @Input() showButton: string = ''
+
+  navigateToLogin() {
+    window.location.href = '/login';
+  }
 }
