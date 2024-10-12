@@ -37,7 +37,7 @@
             @include display-align-justify($a: unset);
             flex-direction: column;
             gap: 16px;
-            width: 100%;            
+            width: 100%;
 
 
             input {
@@ -70,6 +70,10 @@
                     display: flex;
                     align-items: center;
                     gap: 4px;
+
+                    img {
+                        position: unset;
+                    }
                 }
 
                 img {
@@ -99,7 +103,12 @@
                 &:hover {
                     background-color: #2e3edf99;
                 }
-            }            
+            }
+
+            .inputs-not-validate {
+                cursor: no-drop;
+                background-color: #2e3edf99;
+            }
         }
     }
 }

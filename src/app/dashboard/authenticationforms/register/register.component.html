@@ -3,13 +3,15 @@
 
     <div class="content">
         <h1>Sign Up</h1>
-        <form (submit)="signUp()">
+        <form (submit)="signUp($event)" #signupForm="ngForm">
             <div class="form-inputs">
-                <input type="text" name="email" placeholder="Email Address">
+                <input type="text" name="email" placeholder="Email Address" [(ngModel)]="email" required ngModel>
                 <div class="laber-container">
                     <label for="email" class="d-none"><img src="assets/img/warning.png">Email don`t excist!</label>
                 </div>
-                <input [type]="passwordType" name="password" placeholder="Enter a password">
+
+
+                <input [type]="passwordType" name="password" placeholder="Enter a password" [(ngModel)]="password" required ngModel>
                 <div class="laber-container">
                     <label for="password" class="d-none">
                         <img src="assets/img/warning.png">
@@ -18,9 +20,9 @@
                     <img [src]="passwordSrc" alt="" (click)="togglePasswordVisibility()">
                 </div>
 
-                <input [type]="passwordTypeConfirm" name="passwordConfirm" placeholder="Confirm Password">
+                <input [type]="passwordTypeConfirm" name="passwordConfirm" placeholder="Confirm Password" [(ngModel)]="passwordConfirm" required ngModel>
                 <div class="laber-container">
-                    <label for="password" class="d-none">
+                    <label for="password" [class.d-none]="!showError">
                         <img src="assets/img/warning.png">
                         Passwords must match.
                     </label>
@@ -30,7 +32,7 @@
             </div>
 
             <div class="form-buttons">
-                <button type="submit">Get Started</button>
+                <button type="submit" [disabled]="!signupForm.valid" [class.inputs-not-validate]="!signupForm.valid">Get Started</button>
             </div>
         </form>
     </div>

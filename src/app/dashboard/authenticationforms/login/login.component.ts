@@ -15,7 +15,8 @@ export class LoginComponent {
 
   navbarButton: string = 'display: none;'
 
-  login() {
+  login(event: Event) {
+    event.preventDefault();
     console.log('Log in!!')
   }
 
