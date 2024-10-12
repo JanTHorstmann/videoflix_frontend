@@ -1,7 +1,7 @@
-@import '../../../mixin.scss';
+@import '../../../../mixin.scss';
 
 .main-site {
-    background-image: url('../../../assets/img/background-login.png');
+    background-image: url('../../../../assets/img/background-login.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -13,9 +13,9 @@
 
 .content {
     background-color: #ffffff;
-    height: 505px;
-    width: 520px;
-    padding: 30px 0;
+    height: 435px;
+    width: 408px;
+    padding: 43px 56px;
     border-radius: 48px;
     @include display-align-justify($j: unset);
     flex-direction: column;
@@ -27,11 +27,17 @@
 
     form {
 
-        // width: 70%;
+        @include display-align-justify();
+        flex-direction: column;
+        gap: 32px;
+        height: 100%;
+        width: 100%;
+
         .form-inputs {
-            @include display-align-justify($a: left);
+            @include display-align-justify($a: unset);
             flex-direction: column;
             gap: 16px;
+            width: 100%;            
 
 
             input {
@@ -103,6 +109,7 @@
             }
 
             a {
+                cursor: pointer;
                 @include font-size-color($fs: 18px, $fw: 700, $fc: #2E3EDF);
                 text-decoration: none;
 
