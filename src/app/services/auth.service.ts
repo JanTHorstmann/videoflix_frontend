@@ -11,7 +11,8 @@ export class AuthService {
     isLoggedIn(): boolean {
       // Hier kannst du z.B. den Token aus dem lokalen Speicher oder einer anderen Quelle prüfen
       let auth_token = localStorage.getItem('auth_token');
-      if (auth_token) {
+      let session_token = sessionStorage.getItem('auth_token');
+      if (auth_token || session_token) {
         return true
       } else {
         return false;
