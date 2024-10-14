@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -24,9 +25,12 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
 
+  passwordType: string = 'password';
+  passwordSrc: string = 'assets/img/eye.png';
+
   constructor(
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
     this.rememberLogIn();
   }
@@ -44,7 +48,7 @@ export class LoginComponent {
       }
 
       
-      this.http.post('http://127.0.0.1:8000/login/', {}, { headers }).subscribe({
+      this.http.post(`${environment.loginURL}`, {}, { headers }).subscribe({
         next: (response: any) => {
           console.log('Erfolgreich eingeloggt!', response);
           window.location.href = '/dashboard';
@@ -58,24 +62,18 @@ export class LoginComponent {
 
   login(event: Event) {
     event.preventDefault();
-
     const logInData = {
       email: this.email,
       password: this.password,
-    };
-
-    console.log('Data:', logInData);
-    
-    this.http.post('http://127.0.0.1:8000/login/', logInData).subscribe({
+    };    
+    this.http.post(`${environment.loginURL}`, logInData).subscribe({
       next: (response: any) => {
-        // console.log('Erfolgreich registriert!', response);
         if (response.token) {
           if (this.rememberMe) {
             this.authService.login(response.token);
           } else {
             sessionStorage.setItem('auth_token', response.token);
           }
-          // console.log('Token gespeichert:', response.token);
           window.location.href = '/dashboard';
         } else {
           console.error('Kein Token in der Antwort enthalten.');
@@ -86,9 +84,6 @@ export class LoginComponent {
       }
     });
   }
-
-  passwordType: string = 'password';
-  passwordSrc: string = 'assets/img/eye.png';
 
   togglePasswordVisibility() {
     this.passwordType = this.passwordType === 'password' ? 'text' : 'password';

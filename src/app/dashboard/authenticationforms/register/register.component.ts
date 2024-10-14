@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavbarComponent } from '../../navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -41,14 +42,12 @@ export class RegisterComponent {
 
     console.log('Data:', signUpData);
     
-    this.http.post('http://127.0.0.1:8000/register/', signUpData).subscribe({
+    this.http.post(`${environment.registerURL}`, signUpData).subscribe({
       next: (response) => {
-        // console.log('Erfolgreich registriert!', response);
         window.location.href = '/login';
       },
       error: (error) => {
         console.error('Fehler bei der Registrierung', error);
-        // Hier kannst du Fehlerbehandlung durchführen, z.B. Fehlermeldungen anzeigen
       }
     });
   }
@@ -59,18 +58,12 @@ export class RegisterComponent {
   passwordConfirmSrc: string = 'assets/img/eye.png';
 
   togglePasswordVisibility() {
-    // Umschalten zwischen Passwort-Anzeige und normaler Textanzeige
     this.passwordType = this.passwordType === 'password' ? 'text' : 'password';
-
-    // Icon ändern je nach Sichtbarkeit des Passworts
     this.passwordSrc = this.passwordSrc === 'assets/img/eye-off.png' ? 'assets/img/eye.png' : 'assets/img/eye-off.png';
   }
 
   toggleConfrimPasswordVisibility() {
-    // Umschalten zwischen Passwort-Anzeige und normaler Textanzeige
     this.passwordTypeConfirm = this.passwordTypeConfirm === 'password' ? 'text' : 'password';
-
-    // Icon ändern je nach Sichtbarkeit des Passworts
     this.passwordConfirmSrc = this.passwordConfirmSrc === 'assets/img/eye-off.png' ? 'assets/img/eye.png' : 'assets/img/eye-off.png';
   }
 }
