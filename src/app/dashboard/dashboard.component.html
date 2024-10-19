@@ -1,4 +1,14 @@
 <app-navbar></app-navbar>
-<div class="content">
+<div class="content" *ngIf="loadContent">
+<app-previewvideo 
+[previewVideo]="{ 
+    title: previewVideo.title ?? '', 
+    description: previewVideo.description ?? '', 
+    src: previewVideo.video_file ?? '', 
+    created_at: previewVideo.created_at ?? '', 
+    }"></app-previewvideo>
 
+    <div>
+        
+    </div>
 </div>

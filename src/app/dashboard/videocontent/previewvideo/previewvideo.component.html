@@ -1,1 +1,20 @@
-<p>previewvideo works!</p>
+<div class="content">
+
+  <video #previewVideoPlayer muted autoplay="true" (loadedmetadata)="playInRange(previewVideoPlayer)">
+    <source [src]="previewVideo.src" type="video/mp4">
+  </video>
+
+  <div class="video-description">
+    <h1>{{ previewVideo.title }}</h1>
+    <span>{{ previewVideo.description }}</span>
+    <div>
+
+      <button>
+        <img src="assets/img/play_arrow.png" alt="">
+        Play
+      </button>
+    </div>
+    
+  </div>
+
+</div>

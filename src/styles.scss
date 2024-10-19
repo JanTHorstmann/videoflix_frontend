@@ -17,4 +17,5 @@ app-navbar {
     width: calc(100% - 192px);
     position: absolute;
     top: 0;
+    z-index: 999;
 }
