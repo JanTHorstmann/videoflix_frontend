@@ -1,0 +1,17 @@
+@import '../../../../mixin.scss';
+
+.content {
+    width: 240px;
+    height: 125px;
+    @include display-align-justify;
+
+    video {
+        height: 120px;
+    }
+    img {
+        height: 120px;
+        &:hover {
+            height: 125px;
+        }
+    }
+}

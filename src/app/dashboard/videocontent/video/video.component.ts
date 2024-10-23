@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-video',
@@ -9,4 +9,21 @@ import { Component } from '@angular/core';
 })
 export class VideoComponent {
 
+  @Input() video: {
+    title: string,
+    description: string,
+    src: string,
+    thumbnail: string,
+    created_at: string,    
+  }
+
+  constructor() {
+    this.video = {
+      title: '',
+      description: '',
+      src: '',
+      thumbnail: '',
+      created_at: '',
+    }
+  }
 }

@@ -1,15 +1,10 @@
 @import '../../../../mixin.scss';
 
 .content {
-    position: relative;
-    z-index: 2;
 
     video {
         width: 100%;
         max-height: 100vh;
-        position: absolute;
-        top: 0;
-        z-index: 0;
     }
 
     .video-description {
@@ -38,6 +33,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 4px;
         }
     }
 }

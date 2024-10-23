@@ -1,14 +1,22 @@
 <app-navbar></app-navbar>
 <div class="content" *ngIf="loadContent">
-<app-previewvideo 
-[previewVideo]="{ 
+    <app-previewvideo [previewVideo]="{ 
     title: previewVideo.title ?? '', 
     description: previewVideo.description ?? '', 
     src: previewVideo.video_file ?? '', 
     created_at: previewVideo.created_at ?? '', 
     }"></app-previewvideo>
 
-    <div>
-        
+    <div class="video-content">
+
+        <app-videoslideshow 
+        [categoryName]="'New on Videoflix'" 
+        [videos]="videos"></app-videoslideshow>
+
+        <app-videoslideshow 
+        *ngFor="let category of getCategories()"
+        [categoryName]="category" 
+        [videos]="groupedVideos[category]" 
+        ></app-videoslideshow>
     </div>
 </div>

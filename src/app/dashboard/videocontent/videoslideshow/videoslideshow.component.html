@@ -1,1 +1,11 @@
-<p>videoslideshow works!</p>
+<div class="video-selection">
+    <h3>{{categoryName }}</h3>
+    <div class="videos">
+        <app-video *ngFor="let singleVideo of videos" [video]="{
+            title: singleVideo.title,
+            description: singleVideo.description,
+            src: singleVideo.video_file,
+            thumbnail: singleVideo.thumbnail, 
+            created_at: singleVideo.created_at, 
+        }"></app-video>
+</div>

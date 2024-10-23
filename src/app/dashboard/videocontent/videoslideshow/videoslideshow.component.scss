@@ -1,0 +1,19 @@
+@import '../../../../mixin.scss';
+
+.video-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-x: auto;
+    padding-left: 96px;
+    // margin-top: -100px;
+    
+    h3 {
+        @include font-size-color($fs:22px, $fw: 700)
+    }
+    
+    .videos {
+        @include display-align-justify($j: left);
+        gap: 16px;
+    }
+}

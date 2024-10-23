@@ -4,6 +4,8 @@ import { environment } from '../../environments/environment';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { PreviewvideoComponent } from './videocontent/previewvideo/previewvideo.component';
 import { CommonModule } from '@angular/common';
+import { VideoComponent } from './videocontent/video/video.component';
+import { VideoslideshowComponent } from './videocontent/videoslideshow/videoslideshow.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,6 +15,8 @@ import { CommonModule } from '@angular/common';
     HttpClientModule,
     NavbarComponent,
     PreviewvideoComponent,
+    VideoComponent,
+    VideoslideshowComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
@@ -20,9 +24,10 @@ import { CommonModule } from '@angular/common';
 export class DashboardComponent {
 
   token: string = '';
-  videos: {} = {};
+  videos: any[] = [];
   loadContent: boolean = false
-  previewVideo:{ title?: string, description?: string, created_at?: string, video_file?: string } = {};
+  previewVideo: { title?: string, description?: string, created_at?: string, video_file?: string, thumbnail?: string} = {};
+  groupedVideos: { [category: string]: any[] } = {};
 
   constructor(
     private http: HttpClient,
@@ -48,13 +53,32 @@ export class DashboardComponent {
       next: (response: any) => {
         console.log('Content', response);
         this.videos = response;
-        this.previewVideo = response[0]
+        this.previewVideo = response[0];
+        this.groupVideosByCategory()
         this.loadContent = true;
       },
       error: (error) => {
         console.error('Fehler beim Content', error);
       }
     });
+  }
+
+  groupVideosByCategory() {
+    this.videos.forEach((video) => {
+      const category = video.category || 'Uncategorized';
+      if (!this.groupedVideos[category]) {
+        this.groupedVideos[category] = [];
+      }
+      this.groupedVideos[category].push(video);
+    });
+    for (const category in this.groupedVideos) {
+      this.groupedVideos[category].sort((a, b) => a.title.localeCompare(b.title));
+    }
+    console.log('Gruppierte Videos:', this.groupedVideos);
+  }
+
+  getCategories(): string[] {
+    return Object.keys(this.groupedVideos);
   }
 
 }
