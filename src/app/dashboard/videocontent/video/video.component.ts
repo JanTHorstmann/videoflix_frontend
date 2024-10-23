@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { VideoplayService } from '../../../services/videoplay.service';
 
 @Component({
   selector: 'app-video',
@@ -17,7 +18,9 @@ export class VideoComponent {
     created_at: string,    
   }
 
-  constructor() {
+  constructor(
+    private videoService: VideoplayService,
+  ) {
     this.video = {
       title: '',
       description: '',
@@ -25,5 +28,12 @@ export class VideoComponent {
       thumbnail: '',
       created_at: '',
     }
+  }
+
+  playVideo(videoElement:any) {
+    console.log(videoElement.video);
+    this.videoService.loadContent = false;
+    this.videoService.playVideo = true;
+    this.videoService.videoContent = videoElement.video;
   }
 }

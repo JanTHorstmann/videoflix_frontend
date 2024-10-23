@@ -6,6 +6,7 @@ import { PreviewvideoComponent } from './videocontent/previewvideo/previewvideo.
 import { CommonModule } from '@angular/common';
 import { VideoComponent } from './videocontent/video/video.component';
 import { VideoslideshowComponent } from './videocontent/videoslideshow/videoslideshow.component';
+import { VideoplayService } from '../services/videoplay.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,14 +24,15 @@ import { VideoslideshowComponent } from './videocontent/videoslideshow/videoslid
 })
 export class DashboardComponent {
 
+  
   token: string = '';
   videos: any[] = [];
-  loadContent: boolean = false
-  previewVideo: { title?: string, description?: string, created_at?: string, video_file?: string, thumbnail?: string} = {};
+  previewVideo: { title?: string, description?: string, created_at?: string, video_file?: string, thumbnail?: string } = {};
   groupedVideos: { [category: string]: any[] } = {};
 
   constructor(
     private http: HttpClient,
+    public videoService: VideoplayService,
   ) {
     const auth_token = localStorage.getItem('auth_token');
     const session_token = sessionStorage.getItem('auth_token');
@@ -55,7 +57,7 @@ export class DashboardComponent {
         this.videos = response;
         this.previewVideo = response[0];
         this.groupVideosByCategory()
-        this.loadContent = true;
+        this.videoService.loadContent = true;
       },
       error: (error) => {
         console.error('Fehler beim Content', error);
@@ -80,5 +82,7 @@ export class DashboardComponent {
   getCategories(): string[] {
     return Object.keys(this.groupedVideos);
   }
+
+  
 
 }

@@ -1,5 +1,5 @@
-<app-navbar></app-navbar>
-<div class="content" *ngIf="loadContent">
+<app-navbar *ngIf="!videoService.playVideo"></app-navbar>
+<div class="content" *ngIf="videoService.loadContent">
     <app-previewvideo [previewVideo]="{ 
     title: previewVideo.title ?? '', 
     description: previewVideo.description ?? '', 
@@ -18,5 +18,10 @@
         [categoryName]="category" 
         [videos]="groupedVideos[category]" 
         ></app-videoslideshow>
-    </div>
+    </div>    
+</div>
+
+<div *ngIf="videoService.playVideo">
+    <p (click)="videoService.returnToVideoSelection()">{{ videoService.videoContent.title }}</p>
+    <img [src]="videoService.videoContent.thumbnail" alt="">
 </div>
