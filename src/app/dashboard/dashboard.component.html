@@ -8,7 +8,6 @@
     }"></app-previewvideo>
 
     <div class="video-content">
-
         <app-videoslideshow 
         [categoryName]="'New on Videoflix'" 
         [videos]="videos"></app-videoslideshow>
@@ -21,7 +20,7 @@
     </div>    
 </div>
 
-<div *ngIf="videoService.playVideo">
+<div class="video-player" *ngIf="videoService.playVideo">
     <p (click)="videoService.returnToVideoSelection()">{{ videoService.videoContent.title }}</p>
-    <img [src]="videoService.videoContent.thumbnail" alt="">
+    <app-videoplayer></app-videoplayer>
 </div>

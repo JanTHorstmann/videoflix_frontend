@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { VideoComponent } from './videocontent/video/video.component';
 import { VideoslideshowComponent } from './videocontent/videoslideshow/videoslideshow.component';
 import { VideoplayService } from '../services/videoplay.service';
+import { VideoplayerComponent } from './videoplayer/videoplayer.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,6 +19,7 @@ import { VideoplayService } from '../services/videoplay.service';
     PreviewvideoComponent,
     VideoComponent,
     VideoslideshowComponent,
+    VideoplayerComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'

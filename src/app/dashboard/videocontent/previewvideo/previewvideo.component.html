@@ -1,6 +1,6 @@
 <div class="content">
 
-  <video #previewVideoPlayer muted autoplay="true" (loadedmetadata)="playInRange(previewVideoPlayer)">
+  <video #previewVideoPlayer [muted]="true" autoplay="true" (loadedmetadata)="playInRange(previewVideoPlayer)">
     <source [src]="previewVideo.src" type="video/mp4">
   </video>
 
