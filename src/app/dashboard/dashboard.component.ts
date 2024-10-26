@@ -29,7 +29,7 @@ export class DashboardComponent {
   
   token: string = '';
   videos: any[] = [];
-  previewVideo: { title?: string, description?: string, created_at?: string, video_file?: string, thumbnail?: string } = {};
+  // previewVideo: { title?: string, description?: string, created_at?: string, video_file?: string, thumbnail?: string } = {};
   groupedVideos: { [category: string]: any[] } = {};
 
   constructor(
@@ -57,8 +57,8 @@ export class DashboardComponent {
       next: (response: any) => {
         console.log('Content', response);
         this.videos = response;
-        this.previewVideo = response[0];
-        this.groupVideosByCategory()
+        this.videoService.previewVideo = response[0];
+        this.groupVideosByCategory();
         this.videoService.loadContent = true;
       },
       error: (error) => {

@@ -4,7 +4,7 @@
         <app-video *ngFor="let singleVideo of videos" [video]="{
             title: singleVideo.title,
             description: singleVideo.description,
-            src: singleVideo.video_file,
+            video_file: singleVideo.video_file,
             thumbnail: singleVideo.thumbnail, 
             created_at: singleVideo.created_at, 
         }"></app-video>

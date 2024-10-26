@@ -1,12 +1,12 @@
 <div class="content">
 
   <video #previewVideoPlayer [muted]="true" autoplay="true" (loadedmetadata)="playInRange(previewVideoPlayer)">
-    <source [src]="previewVideo.src" type="video/mp4">
+    <source [src]="videoService.previewVideo.video_file" type="video/mp4">
   </video>
 
   <div class="video-description">
-    <h1>{{ previewVideo.title }}</h1>
-    <span>{{ previewVideo.description }}</span>
+    <h1>{{ videoService.previewVideo.title }}</h1>
+    <span>{{ videoService.previewVideo.description }}</span>
     <div>
 
       <button>

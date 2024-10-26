@@ -13,7 +13,7 @@ export class VideoComponent {
   @Input() video: {
     title: string,
     description: string,
-    src: string,
+    video_file: string,
     thumbnail: string,
     created_at: string,    
   }
@@ -24,16 +24,21 @@ export class VideoComponent {
     this.video = {
       title: '',
       description: '',
-      src: '',
+      video_file: '',
       thumbnail: '',
       created_at: '',
     }
   }
 
-  playVideo(videoElement:any) {
+  playVideo(videoElement: any) {
     console.log(videoElement.video);
     this.videoService.loadContent = false;
     this.videoService.playVideo = true;
     this.videoService.videoContent = videoElement.video;
+  }
+
+  changePreviewVideo(videoElement: any) {
+    console.log(videoElement.video);     
+    this.videoService.previewVideo = videoElement.video
   }
 }

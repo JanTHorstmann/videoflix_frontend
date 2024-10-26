@@ -1,30 +1,24 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { VideoplayService } from '../../../services/videoplay.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-previewvideo',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule,
+  ],
   templateUrl: './previewvideo.component.html',
   styleUrl: './previewvideo.component.scss'
 })
 export class PreviewvideoComponent {
   @ViewChild('previewVideoPlayer') previewVideoPlayer!: ElementRef;
 
-  @Input() previewVideo: {
-    title: string,
-    description: string,
-    src: string,
-    created_at: string,    
-  }
+  previousPreviewVideoSrc: string | undefined;
 
-  constructor() {
-    this.previewVideo = {
-      title: '',
-      description: '',
-      src: '',
-      created_at: '',
-    }
-  }
+  constructor(
+    public videoService: VideoplayService
+  ) { }
 
   playInRange(video: HTMLVideoElement) {
     const startTime = 0;
@@ -39,8 +33,19 @@ export class PreviewvideoComponent {
     };
 
     video.play();
-    
   }
 
+  ngDoCheck() {
+    if (this.videoService.previewVideo.video_file !== this.previousPreviewVideoSrc) {
+      this.previousPreviewVideoSrc = this.videoService.previewVideo.video_file;
+      this.reloadVideo();
+    }
+  }
+
+  reloadVideo() {
+    const videoElement = this.previewVideoPlayer.nativeElement;
+    videoElement.load();
+    videoElement.play();
+  }
 
 }

@@ -1,11 +1,6 @@
 <app-navbar *ngIf="!videoService.playVideo"></app-navbar>
 <div class="content" *ngIf="videoService.loadContent">
-    <app-previewvideo [previewVideo]="{ 
-    title: previewVideo.title ?? '', 
-    description: previewVideo.description ?? '', 
-    src: previewVideo.video_file ?? '', 
-    created_at: previewVideo.created_at ?? '', 
-    }"></app-previewvideo>
+    <app-previewvideo></app-previewvideo>
 
     <div class="video-content">
         <app-videoslideshow 
@@ -21,6 +16,6 @@
 </div>
 
 <div class="video-player" *ngIf="videoService.playVideo">
-    <p (click)="videoService.returnToVideoSelection()">{{ videoService.videoContent.title }}</p>
+    <span (click)="videoService.returnToVideoSelection()">{{ videoService.videoContent.title }}</span>
     <app-videoplayer></app-videoplayer>
 </div>
