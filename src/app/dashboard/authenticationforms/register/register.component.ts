@@ -17,13 +17,14 @@ import { environment } from '../../../../environments/environment';
 })
 export class RegisterComponent {
 
-  username:string = '';
+  username: string = '';
   email: string = '';
   password: string = '';
   passwordConfirm: string = '';
   showError: boolean = false;
+  navbarButton: string = 'display: none;'
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   signUp(event: Event) {
     event.preventDefault();
@@ -41,7 +42,7 @@ export class RegisterComponent {
     };
 
     console.log('Data:', signUpData);
-    
+
     this.http.post(`${environment.registerURL}`, signUpData).subscribe({
       next: (response) => {
         window.location.href = '/login';

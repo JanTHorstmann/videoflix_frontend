@@ -1,4 +1,6 @@
-<app-navbar *ngIf="!videoService.playVideo"></app-navbar>
+<app-navbar 
+*ngIf="!videoService.playVideo"
+[showLogInButton] = 'navbarButton'></app-navbar>
 <div class="content" *ngIf="videoService.loadContent">
     <app-previewvideo></app-previewvideo>
 

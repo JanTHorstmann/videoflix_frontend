@@ -13,6 +13,8 @@
             border: none;
             border-radius: 40px;
             @include font-size-color($fs: 18px, $fw: 700);
+            @include display-align-justify();
+            gap: 4px;
 
             &:hover {
                 background-color: #2e3edf99;

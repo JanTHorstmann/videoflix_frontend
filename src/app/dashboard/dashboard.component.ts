@@ -29,6 +29,7 @@ export class DashboardComponent {
   
   token: string = '';
   videos: any[] = [];
+  navbarButton: string = 'display: none;'
   // previewVideo: { title?: string, description?: string, created_at?: string, video_file?: string, thumbnail?: string } = {};
   groupedVideos: { [category: string]: any[] } = {};
 

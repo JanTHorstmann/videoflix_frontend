@@ -10,9 +10,16 @@ import { Component, Input } from '@angular/core';
 })
 export class NavbarComponent {
 
-  @Input() showButton: string = ''
+  @Input() showLogInButton: string = '';
+  @Input() showLogOutButton: string = '';
 
   navigateToLogin() {
     window.location.href = '/login';
+  }
+
+  logOut() {
+    localStorage.removeItem('auth_token');
+    sessionStorage.removeItem('auth_token');
+    this.navigateToLogin();
   }
 }

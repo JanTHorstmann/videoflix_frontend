@@ -43,9 +43,11 @@ export class PreviewvideoComponent {
   }
 
   reloadVideo() {
-    const videoElement = this.previewVideoPlayer.nativeElement;
-    videoElement.load();
-    videoElement.play();
+    if (this.previewVideoPlayer) {
+      const videoElement = this.previewVideoPlayer.nativeElement;
+      videoElement.load();
+      videoElement.play();
+    }
   }
 
 }
