@@ -3,6 +3,9 @@ import { LoginComponent } from './dashboard/authenticationforms/login/login.comp
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './auth/auth.guard';
 import { RegisterComponent } from './dashboard/authenticationforms/register/register.component';
+import { ForgotpasswordComponent } from './dashboard/authenticationforms/forgotpassword/forgotpassword.component';
+import { ResetpasswordComponent } from './dashboard/authenticationforms/resetpassword/resetpassword.component';
+import { ConfirmEmailComponent } from './dashboard/authenticationforms/confirm-email/confirm-email.component';
 
 export const routes: Routes = [
     {
@@ -12,11 +15,23 @@ export const routes: Routes = [
     },
     {
         path: 'login',
-        component: LoginComponent
+        component: LoginComponent,
     },
     {
         path: 'signup',
-        component: RegisterComponent
+        component: RegisterComponent,
+    },
+    {
+        path: 'forgotpassword',
+        component: ForgotpasswordComponent,
+    },
+    {
+        path: 'resetpassword',
+        component: ResetpasswordComponent,
+    },
+    {
+        path: 'confirm_email',
+        component: ConfirmEmailComponent,
     },
     {
         path: 'dashboard',
