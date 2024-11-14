@@ -6,7 +6,8 @@ import { RegisterComponent } from './dashboard/authenticationforms/register/regi
 import { ForgotpasswordComponent } from './dashboard/authenticationforms/forgotpassword/forgotpassword.component';
 import { ResetpasswordComponent } from './dashboard/authenticationforms/resetpassword/resetpassword.component';
 import { ConfirmEmailComponent } from './dashboard/authenticationforms/confirm-email/confirm-email.component';
-import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { ImprintComponent } from './guidelines/imprint/imprint.component';
+import { PrivacyPolicyComponent } from './guidelines/privacy-policy/privacy-policy.component';
 
 export const routes: Routes = [
     {
@@ -42,5 +43,9 @@ export const routes: Routes = [
     {
         path: 'privacy-policy',
         component: PrivacyPolicyComponent,
+    },
+    {
+        path: 'imprint',
+        component: ImprintComponent,
     },
 ];

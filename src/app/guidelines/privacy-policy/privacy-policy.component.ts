@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavbarComponent } from '../dashboard/navbar/navbar.component';
+import { NavbarComponent } from '../../dashboard/navbar/navbar.component';
 
 @Component({
   selector: 'app-privacy-policy',

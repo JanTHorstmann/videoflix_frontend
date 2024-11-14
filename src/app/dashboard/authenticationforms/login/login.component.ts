@@ -5,6 +5,7 @@ import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http'
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { environment } from '../../../../environments/environment';
+import { GuidelinesComponent } from '../../../guidelines/guidelines.component';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -13,6 +14,7 @@ import { environment } from '../../../../environments/environment';
     CommonModule,
     HttpClientModule,
     FormsModule,
+    GuidelinesComponent,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'

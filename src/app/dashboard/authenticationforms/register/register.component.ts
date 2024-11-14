@@ -6,6 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { NotificationBannerComponent } from '../notification-banner/notification-banner.component';
 import { CommonModule } from '@angular/common';
 import { VideoplayService } from '../../../services/videoplay.service';
+import { GuidelinesComponent } from '../../../guidelines/guidelines.component';
 
 @Component({
   selector: 'app-register',
@@ -16,6 +17,7 @@ import { VideoplayService } from '../../../services/videoplay.service';
     CommonModule,
     HttpClientModule,
     NotificationBannerComponent,
+    GuidelinesComponent,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'

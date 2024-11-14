@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NotificationBannerComponent } from '../notification-banner/notification-banner.component';
 import { VideoplayService } from '../../../services/videoplay.service';
+import { GuidelinesComponent } from '../../../guidelines/guidelines.component';
 
 @Component({
   selector: 'app-forgotpassword',
@@ -17,6 +18,7 @@ import { VideoplayService } from '../../../services/videoplay.service';
     CommonModule,
     HttpClientModule,
     FormsModule,
+    GuidelinesComponent,
   ],
   templateUrl: './forgotpassword.component.html',
   styleUrl: './forgotpassword.component.scss'

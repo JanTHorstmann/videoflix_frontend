@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NotificationBannerComponent } from '../notification-banner/notification-banner.component';
 import { VideoplayService } from '../../../services/videoplay.service';
 import { CommonModule } from '@angular/common';
+import { GuidelinesComponent } from '../../../guidelines/guidelines.component';
 
 @Component({
   selector: 'app-resetpassword',
@@ -17,6 +18,7 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     HttpClientModule,
     NotificationBannerComponent,
+    GuidelinesComponent,
   ],
   templateUrl: './resetpassword.component.html',
   styleUrl: './resetpassword.component.scss'
