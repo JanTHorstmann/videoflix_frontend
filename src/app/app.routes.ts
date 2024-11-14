@@ -6,6 +6,7 @@ import { RegisterComponent } from './dashboard/authenticationforms/register/regi
 import { ForgotpasswordComponent } from './dashboard/authenticationforms/forgotpassword/forgotpassword.component';
 import { ResetpasswordComponent } from './dashboard/authenticationforms/resetpassword/resetpassword.component';
 import { ConfirmEmailComponent } from './dashboard/authenticationforms/confirm-email/confirm-email.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 export const routes: Routes = [
     {
@@ -37,5 +38,9 @@ export const routes: Routes = [
         path: 'dashboard',
         component: DashboardComponent,
         canActivate: [AuthGuard],  // Nur zugänglich, wenn der Benutzer eingeloggt ist
+    },
+    {
+        path: 'privacy-policy',
+        component: PrivacyPolicyComponent,
     },
 ];
