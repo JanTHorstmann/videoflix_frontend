@@ -4,14 +4,19 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { ActivatedRoute } from '@angular/router';
+import { NotificationBannerComponent } from '../notification-banner/notification-banner.component';
+import { VideoplayService } from '../../../services/videoplay.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-resetpassword',
   standalone: true,
   imports: [
     NavbarComponent,
+    CommonModule,
     FormsModule,
     HttpClientModule,
+    NotificationBannerComponent,
   ],
   templateUrl: './resetpassword.component.html',
   styleUrl: './resetpassword.component.scss'
@@ -31,7 +36,8 @@ export class ResetpasswordComponent {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    public videoservice: VideoplayService,
   ) { }
 
   ngOnInit() {
@@ -64,7 +70,15 @@ export class ResetpasswordComponent {
 
     this.http.post(resetURL, resetData).subscribe({
       next: (response) => {
-        window.location.href = '/login';
+        this.videoservice.showBanner = true;
+        setTimeout(() => {
+          this.videoservice.moveBanner = true;
+        }, 10);
+        setTimeout(() => {
+          this.videoservice.showBanner = false;
+          this.videoservice.moveBanner = false;
+          window.location.href = '/login';
+        }, 2000);
       },
       error: (error) => {
         console.error('Fehler bei der Registrierung', error);

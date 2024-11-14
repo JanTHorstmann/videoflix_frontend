@@ -1,0 +1,21 @@
+@import '../../../../mixin.scss';
+
+.content {
+    border-radius: 20px;
+    background-color: #2E3EDF;
+    padding: 24px 32px;
+    width: 280px;
+    @include display-align-justify();
+    position: absolute;
+    left: calc(50% - 172px);
+    bottom: 0;
+    transition: bottom 225ms ease-in-out;
+
+    span {
+        @include font-size-color($fs: 20px, $fw: 700)
+    }
+}
+
+.move-banner {
+    bottom: 50% !important;
+}

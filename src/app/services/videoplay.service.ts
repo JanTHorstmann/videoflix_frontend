@@ -8,6 +8,8 @@ export class VideoplayService {
   showInterface: boolean = false;
   playVideo: boolean = false;
   loadContent: boolean = false;
+  moveBanner: boolean = false;
+  showBanner: boolean = false;
   videoContent: { title?: string, description?: string, video_file?: string, thumbnail?: string, created_at?: string, } = {}
   previewVideo: { title?: string, description?: string, video_file?: string, thumbnail?: string, created_at?: string, } = {}
   timeout: any;

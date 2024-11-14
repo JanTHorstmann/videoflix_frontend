@@ -9,6 +9,7 @@
     width: 100%;
     @include display-align-justify();
     flex-direction: column;
+    overflow-y: hidden;
 }
 
 .content {

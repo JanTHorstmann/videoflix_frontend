@@ -3,6 +3,9 @@ import { NavbarComponent } from '../../navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { NotificationBannerComponent } from '../notification-banner/notification-banner.component';
+import { CommonModule } from '@angular/common';
+import { VideoplayService } from '../../../services/videoplay.service';
 
 @Component({
   selector: 'app-register',
@@ -10,7 +13,9 @@ import { environment } from '../../../../environments/environment';
   imports: [
     NavbarComponent,
     FormsModule,
+    CommonModule,
     HttpClientModule,
+    NotificationBannerComponent,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -22,9 +27,13 @@ export class RegisterComponent {
   password: string = '';
   passwordConfirm: string = '';
   showError: boolean = false;
+  emailError: boolean = false
   navbarButton: string = 'display: none;'
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    public videoservice: VideoplayService,
+  ) { }
 
   signUp(event: Event) {
     event.preventDefault();
@@ -43,10 +52,19 @@ export class RegisterComponent {
 
     this.http.post(`${environment.registerURL}`, signUpData).subscribe({
       next: (response) => {
-        window.location.href = '/login';
+        this.videoservice.showBanner = true;
+        setTimeout(() => {
+          this.videoservice.moveBanner = true;
+        }, 10);
+        setTimeout(() => {
+          this.videoservice.showBanner = false;
+          this.videoservice.moveBanner = false;
+          window.location.href = '/login';
+        }, 2000);
       },
       error: (error) => {
         console.error('Fehler bei der Registrierung', error);
+        this.emailError = true;
       }
     });
   }

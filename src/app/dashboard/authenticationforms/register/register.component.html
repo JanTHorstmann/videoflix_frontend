@@ -7,7 +7,7 @@
             <div class="form-inputs">
                 <input type="text" name="email" placeholder="Email Address" [(ngModel)]="email" required ngModel>
                 <div class="laber-container">
-                    <label for="email" class="d-none"><img src="assets/img/warning.png">Email don`t excist!</label>
+                    <label for="email" [class.d-none]="!emailError"><img src="assets/img/warning.png">Enter a valid email address.</label>
                 </div>
 
 
@@ -41,4 +41,6 @@
         <a href="">Datenschutz</a>
         <a href="">Impressum</a>
     </div>
+    <app-notification-banner [bannerNotice]="'User Created'" *ngIf="videoservice.showBanner"></app-notification-banner>
 </div>
+
