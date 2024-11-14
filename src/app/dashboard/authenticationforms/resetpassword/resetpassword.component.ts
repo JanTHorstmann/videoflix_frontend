@@ -3,6 +3,7 @@ import { NavbarComponent } from '../../navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-resetpassword',
@@ -16,6 +17,8 @@ import { environment } from '../../../../environments/environment';
   styleUrl: './resetpassword.component.scss'
 })
 export class ResetpasswordComponent {
+  token!: string;
+
   showError: boolean = false;
   password: string = '';
   passwordConfirm: string = '';
@@ -26,7 +29,16 @@ export class ResetpasswordComponent {
   passwordSrc: string = 'assets/img/eye.png';
   passwordConfirmSrc: string = 'assets/img/eye.png';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private http: HttpClient
+  ) { }
+
+  ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.token = params['token'];
+    });    
+  }
 
   togglePasswordVisibility() {
     this.passwordType = this.passwordType === 'password' ? 'text' : 'password';
@@ -44,14 +56,13 @@ export class ResetpasswordComponent {
       this.showError = true;
       return;
     }
+    const resetURL = `${environment.resetPasswordURL}?token=${this.token}`;
 
     const resetData = {
-      password: this.password,
+      new_password: this.password,
     };
 
-    console.log('Data:', resetData);
-
-    this.http.post(`${environment.resetPasswordURL}`, resetData).subscribe({
+    this.http.post(resetURL, resetData).subscribe({
       next: (response) => {
         window.location.href = '/login';
       },

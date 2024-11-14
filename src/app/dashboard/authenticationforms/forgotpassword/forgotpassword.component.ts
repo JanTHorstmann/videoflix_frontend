@@ -44,9 +44,8 @@ export class ForgotpasswordComponent {
     this.http.post(`${environment.forgotPasswordURL}`, payload, { headers })
       .subscribe({
         next: (response) => {
-          console.log('Password reset email sent:', response);
           this.wrongEntry = false;
-          alert('An email has been sent with password reset instructions.');
+          window.location.href = '/login';
         },
         error: (error) => {
           console.error('Error sending password reset email:', error);

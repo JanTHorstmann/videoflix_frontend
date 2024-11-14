@@ -8,8 +8,9 @@
     video {
         height: 120px;
     }
-    img {
+    img {        
         height: 120px;
+        cursor: pointer;
         &:hover {
             height: 125px;
         }

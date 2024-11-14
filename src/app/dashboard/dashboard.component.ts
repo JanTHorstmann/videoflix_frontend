@@ -4,7 +4,6 @@ import { environment } from '../../environments/environment';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { PreviewvideoComponent } from './videocontent/previewvideo/previewvideo.component';
 import { CommonModule } from '@angular/common';
-import { VideoComponent } from './videocontent/video/video.component';
 import { VideoslideshowComponent } from './videocontent/videoslideshow/videoslideshow.component';
 import { VideoplayService } from '../services/videoplay.service';
 import { VideoplayerComponent } from './videoplayer/videoplayer.component';
@@ -17,7 +16,6 @@ import { VideoplayerComponent } from './videoplayer/videoplayer.component';
     HttpClientModule,
     NavbarComponent,
     PreviewvideoComponent,
-    VideoComponent,
     VideoslideshowComponent,
     VideoplayerComponent,
   ],
@@ -46,7 +44,7 @@ export class DashboardComponent {
     if (session_token) {
       this.token = session_token;
     }
-    console.log('token', this.token);
+    
     this.loadVideoContent();
   }
 
@@ -56,7 +54,6 @@ export class DashboardComponent {
 
     this.http.get(`${environment.videoContentURL}`, { headers }).subscribe({
       next: (response: any) => {
-        console.log('Content', response);
         this.videos = response;
         this.videoService.previewVideo = response[0];
         this.groupVideosByCategory();
@@ -79,13 +76,9 @@ export class DashboardComponent {
     for (const category in this.groupedVideos) {
       this.groupedVideos[category].sort((a, b) => a.title.localeCompare(b.title));
     }
-    console.log('Gruppierte Videos:', this.groupedVideos);
   }
 
   getCategories(): string[] {
     return Object.keys(this.groupedVideos);
   }
-
-  
-
 }

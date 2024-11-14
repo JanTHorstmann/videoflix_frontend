@@ -41,8 +41,6 @@ export class RegisterComponent {
       password: this.password,
     };
 
-    console.log('Data:', signUpData);
-
     this.http.post(`${environment.registerURL}`, signUpData).subscribe({
       next: (response) => {
         window.location.href = '/login';

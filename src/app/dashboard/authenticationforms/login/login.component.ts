@@ -50,7 +50,6 @@ export class LoginComponent {
       
       this.http.post(`${environment.loginURL}`, {}, { headers }).subscribe({
         next: (response: any) => {
-          console.log('Erfolgreich eingeloggt!', response);
           window.location.href = '/dashboard';
         },
         error: (error) => {

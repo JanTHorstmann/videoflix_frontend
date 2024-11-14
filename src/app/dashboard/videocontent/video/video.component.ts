@@ -31,14 +31,12 @@ export class VideoComponent {
   }
 
   playVideo(videoElement: any) {
-    console.log(videoElement.video);
     this.videoService.loadContent = false;
     this.videoService.playVideo = true;
     this.videoService.videoContent = videoElement.video;
   }
 
-  changePreviewVideo(videoElement: any) {
-    console.log(videoElement.video);     
+  changePreviewVideo(videoElement: any) {  
     this.videoService.previewVideo = videoElement.video
   }
 }

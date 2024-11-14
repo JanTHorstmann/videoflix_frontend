@@ -1,23 +1,23 @@
-<app-navbar 
-*ngIf="!videoService.playVideo"
-[showLogInButton] = 'navbarButton'></app-navbar>
+<app-navbar *ngIf="!videoService.playVideo" [showLogInButton]='navbarButton'></app-navbar>
 <div class="content" *ngIf="videoService.loadContent">
     <app-previewvideo></app-previewvideo>
 
     <div class="video-content">
-        <app-videoslideshow 
-        [categoryName]="'New on Videoflix'" 
-        [videos]="videos"></app-videoslideshow>
+        <app-videoslideshow [categoryName]="'New on Videoflix'" [videos]="videos"></app-videoslideshow>
 
-        <app-videoslideshow 
-        *ngFor="let category of getCategories()"
-        [categoryName]="category" 
-        [videos]="groupedVideos[category]" 
-        ></app-videoslideshow>
-    </div>    
+        <app-videoslideshow *ngFor="let category of getCategories()" [categoryName]="category"
+            [videos]="groupedVideos[category]"></app-videoslideshow>
+    </div>
 </div>
 
 <div class="video-player" *ngIf="videoService.playVideo">
-    <span (click)="videoService.returnToVideoSelection()">{{ videoService.videoContent.title }}</span>
-    <app-videoplayer></app-videoplayer>
+    <div class="header" *ngIf="videoService.showInterface">
+        <img src="assets/img/arrow_back.png" (click)="videoService.returnToVideoSelection()">
+        <span>Optimizing video for your screen 40%</span>
+        <img src="assets/img/logo_arrow.png">
+    </div>
+    <app-videoplayer (mousemove)="videoService.getInterface()"></app-videoplayer>
+    <div class="title" *ngIf="videoService.showInterface">
+        <span>{{ videoService.videoContent.title }}</span>
+    </div>
 </div>

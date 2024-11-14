@@ -1,3 +1,7 @@
-video {
-    width: 100%;
+@import '../../../mixin.scss';
+
+.content {
+    video {
+        width: 100%;
+    }   
 }
