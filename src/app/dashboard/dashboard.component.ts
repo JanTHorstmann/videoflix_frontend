@@ -8,6 +8,13 @@ import { VideoslideshowComponent } from './videocontent/videoslideshow/videoslid
 import { VideoplayService } from '../services/videoplay.service';
 import { VideoplayerComponent } from './videoplayer/videoplayer.component';
 
+/**
+ * DashboardComponent is responsible for loading and displaying video content.
+ * It fetches video data from an API, groups the videos by category, and 
+ * provides the necessary data to other components such as Navbar, VideoSlideshow, 
+ * and VideoPlayer. It also manages the token for authentication and controls 
+ * the visibility of buttons in the navbar.
+ */
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -24,34 +31,53 @@ import { VideoplayerComponent } from './videoplayer/videoplayer.component';
 })
 export class DashboardComponent {
 
-  
+  /**
+   * Stores the authentication token used for API requests.
+   */
   token: string = '';
+
+  /**
+   * An array of videos fetched from the server to be displayed on the dashboard.
+   */
   videos: any[] = [];
-  navbarButton: string = 'display: none;'
-  // previewVideo: { title?: string, description?: string, created_at?: string, video_file?: string, thumbnail?: string } = {};
+
+  /**
+   * A string representing the visibility of the navbar button. The default is hidden.
+   */
+  navbarButton: string = 'display: none;';
+
+  /**
+   * An object that groups videos by their categories.
+   */
   groupedVideos: { [category: string]: any[] } = {};
 
+  /**
+   * Creates an instance of the DashboardComponent.
+   * Initializes the token from localStorage or sessionStorage and fetches the video content.
+   * @param http The HttpClient used to make HTTP requests.
+   * @param videoService The service responsible for managing video content and playback.
+   */
   constructor(
     private http: HttpClient,
     public videoService: VideoplayService,
   ) {
     const auth_token = localStorage.getItem('auth_token');
     const session_token = sessionStorage.getItem('auth_token');
-
     if (auth_token) {
       this.token = auth_token;
     }
     if (session_token) {
       this.token = session_token;
     }
-    
     this.loadVideoContent();
   }
 
-
+  /**
+   * Fetches video content from the server using an authenticated API request.
+   * Upon success, the videos are saved, and the videos are grouped by category.
+   */
   loadVideoContent() {
     const headers = new HttpHeaders().set('Authorization', `Token ${this.token}`);
-
     this.http.get(`${environment.videoContentURL}`, { headers }).subscribe({
       next: (response: any) => {
         this.videos = response;
@@ -65,6 +91,10 @@ export class DashboardComponent {
     });
   }
 
+    /**
+   * Groups the videos by category and sorts them alphabetically by title.
+   * Categories are dynamically created if they do not exist.
+   */
   groupVideosByCategory() {
     this.videos.forEach((video) => {
       const category = video.category || 'Uncategorized';
@@ -78,6 +108,10 @@ export class DashboardComponent {
     }
   }
 
+    /**
+   * Returns an array of category names from the grouped videos.
+   * @returns An array of category names.
+   */
   getCategories(): string[] {
     return Object.keys(this.groupedVideos);
   }

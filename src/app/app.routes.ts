@@ -38,7 +38,7 @@ export const routes: Routes = [
     {
         path: 'dashboard',
         component: DashboardComponent,
-        canActivate: [AuthGuard],  // Nur zugänglich, wenn der Benutzer eingeloggt ist
+        canActivate: [AuthGuard],  // Only accessible when the user is logged in
     },
     {
         path: 'privacy-policy',
