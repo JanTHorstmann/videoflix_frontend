@@ -19,3 +19,33 @@ app-navbar {
     top: 0;
     z-index: 999;
 }
+
+/* Stile für die Scrollbar */
+::-webkit-scrollbar {
+    width: 10px; /* Breite des Scrollbalkens */
+    height: 10px; /* Höhe des horizontalen Scrollbalkens */
+  }
+  
+  /* Stile für die Schiene der Scrollbar */
+  ::-webkit-scrollbar-track {
+    background-color: #ffffff91; /* Hintergrundfarbe der Schiene */
+    border-radius: 8px; /* Eckenradius der Schiene */
+  }
+  
+  /* Stile für den Scrollbalken selbst */
+  ::-webkit-scrollbar-thumb {
+    background-color: #141414; /* Farbe des Scrollbalkens */
+    border-radius: 8px; /* Eckenradius des Scrollbalkens */
+    border: 2px solid #ffffff91; /* Optional: Weißer Rand um den Scrollbalken */
+  }
+  
+  /* Optionale Stile für den Hover-Effekt */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #333333; /* Etwas hellere Farbe, wenn der Benutzer mit der Maus darüber fährt */
+  }
+
+@media (max-width: 550px) {
+    app-navbar {
+        width: calc(100% - 32px);
+    }
+}

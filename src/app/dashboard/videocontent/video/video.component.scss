@@ -8,11 +8,32 @@
     video {
         height: 120px;
     }
-    img {        
+
+    img {
         height: 120px;
         cursor: pointer;
+
         &:hover {
             height: 125px;
+        }
+    }
+}
+
+@media (max-width: 700px) {
+    .content {
+        width: 190px;
+        height: 101px;
+
+        video {
+            height: 96px;
+        }
+
+        img {
+            height: 96px;
+
+            &:hover {
+                height: 101px;
+            }
         }
     }
 }
