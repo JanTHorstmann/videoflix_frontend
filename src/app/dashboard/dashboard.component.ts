@@ -81,6 +81,7 @@ export class DashboardComponent {
     this.http.get(`${environment.videoContentURL}`, { headers }).subscribe({
       next: (response: any) => {
         this.videos = response;
+        this.sortByDate();
         this.videoService.previewVideo = response[0];
         this.groupVideosByCategory();
         this.videoService.loadContent = true;
@@ -97,6 +98,8 @@ export class DashboardComponent {
    */
   groupVideosByCategory() {
     this.videos.forEach((video) => {
+      console.log('Video:', video);
+      
       const category = video.category || 'Uncategorized';
       if (!this.groupedVideos[category]) {
         this.groupedVideos[category] = [];
@@ -104,8 +107,31 @@ export class DashboardComponent {
       this.groupedVideos[category].push(video);
     });
     for (const category in this.groupedVideos) {
-      this.groupedVideos[category].sort((a, b) => a.title.localeCompare(b.title));
+      this.groupedVideos[category].sort((a, b) => {
+        const dateA = new Date(a.created_at);
+        const dateB = new Date(b.created_at);
+        return dateA.getTime() - dateB.getTime();
+      });
     }
+  }
+
+/**
+ * Sorts the videos array by the `created_at` property in ascending order.
+ * 
+ * Each video object is expected to have a `created_at` property in the format `YYYY-MM-DD`.
+ * The method converts these strings into JavaScript Date objects for comparison.
+ * 
+ * - Older videos (earlier dates) will appear first in the array.
+ * - If you want the newest videos first, reverse the subtraction in the `sort` callback.
+ * 
+ * @throws {Error} If `created_at` is not a valid date format for any video object.
+ */
+  sortByDate() {
+    this.videos.sort((a, b) => {
+      const dateA = new Date(a.created_at);
+      const dateB = new Date(b.created_at);
+      return dateA.getTime() - dateB.getTime();
+    });
   }
 
     /**

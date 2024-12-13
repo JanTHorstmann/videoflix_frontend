@@ -3,6 +3,7 @@
 .content {
     width: 240px;
     height: 125px;
+    position: relative;
     @include display-align-justify;
 
     video {
@@ -16,6 +17,15 @@
         &:hover {
             height: 125px;
         }
+    }
+
+    span {
+        padding-left: 25px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        color: #FFFFFF;
     }
 }
 

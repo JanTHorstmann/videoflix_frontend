@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { VideoplayService } from '../../services/videoplay.service';
 
 /**
@@ -15,11 +15,22 @@ import { VideoplayService } from '../../services/videoplay.service';
 })
 export class VideoplayerComponent {
 
+  @ViewChild('videoPlayer') videoPlayer!: ElementRef;
+
+  videoDuration!: number;
+  videoCurrentTime!: number;
+
   /**
    * The source URL for the video at 480p resolution.
    * This will be set based on the video file's path.
    */
-  videoSrc_480p = '';
+  videoSrc_120p = '';
+
+  /**
+ * The source URL for the video at 480p resolution.
+ * This will be set based on the video file's path.
+ */
+  videoSrc_360p = '';
 
   /**
    * The source URL for the video at 720p resolution.
@@ -44,16 +55,32 @@ export class VideoplayerComponent {
     this.getVideoQuality();
   }
 
-    /**
-   * Determines the available video resolutions (480p, 720p, 1080p) 
-   * by extracting the base video file name and appending the respective resolution suffix.
-   */
+  ngOnInit() {
+    let currentTimeInterval = setInterval(() => {
+      if (this.videoPlayer.nativeElement) {
+        this.videoDuration = this.videoPlayer.nativeElement.duration
+        
+        if (this.videoCurrentTime == this.videoDuration) {
+          clearInterval(currentTimeInterval);
+        }
+        this.videoCurrentTime = this.videoPlayer.nativeElement.currentTime
+        console.log('CurrentTime:', this.videoCurrentTime);
+        console.log('TotalTime:', this.videoDuration);
+      }
+    }, 2000);
+  }
+
+  /**
+ * Determines the available video resolutions (480p, 720p, 1080p) 
+ * by extracting the base video file name and appending the respective resolution suffix.
+ */
   getVideoQuality() {
     if (this.videoService.videoContent.video_file) {
       let src = this.videoService.videoContent.video_file.split('.mp4');
-      this.videoSrc_480p = src[0] + '_480p.mp4';
+      this.videoSrc_120p = src[0] + '_120p.mp4';
+      this.videoSrc_360p = src[0] + '_436p.mp4';
       this.videoSrc_720p = src[0] + '_720p.mp4';
-      this.videoSrc_1080p = src[0] + '_1080p.mp4';      
+      this.videoSrc_1080p = src[0] + '_1080p.mp4';
     }
   }
 }
