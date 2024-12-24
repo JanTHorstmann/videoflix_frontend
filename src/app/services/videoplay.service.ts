@@ -43,7 +43,7 @@ export class VideoplayService {
    * An object containing information about the currently loaded video content.
    * Includes title, description, video file, thumbnail, and creation date.
    */
-  videoContent: { title?: string, description?: string, video_file?: string, thumbnail?: string, created_at?: string } = {};
+  videoContent: {id?: number, title?: string, description?: string, video_file?: string, thumbnail?: string, created_at?: string } = {};
 
   /**
    * An object containing information about the currently previewed video.

@@ -19,6 +19,7 @@ export class VideoComponent {
    * thumbnail image, and creation date.
    */
   @Input() video: {
+    id: string,
     title: string,
     description: string,
     video_file: string,
@@ -35,6 +36,7 @@ export class VideoComponent {
     private videoService: VideoplayService,
   ) {
     this.video = {
+      id: '',
       title: '',
       description: '',
       video_file: '',

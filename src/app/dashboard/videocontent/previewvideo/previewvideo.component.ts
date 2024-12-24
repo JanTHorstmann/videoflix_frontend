@@ -48,9 +48,12 @@ export class PreviewvideoComponent {
     video.ontimeupdate = () => {
       if (video.currentTime >= endTime) {
         video.pause();
+        video.ontimeupdate = null;
       }
     };
-    video.play();
+    video.play().catch((error) => {
+      console.error('Error playing video:', error);
+    })
   }
 
     /**
