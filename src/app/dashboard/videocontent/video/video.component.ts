@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { VideoplayService } from '../../../services/videoplay.service';
+import { CommonModule } from '@angular/common';
 
 /**
  * VideoComponent handles displaying a video with its details (title, description, thumbnail) 
@@ -8,30 +9,37 @@ import { VideoplayService } from '../../../services/videoplay.service';
 @Component({
   selector: 'app-video',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule,
+  ],
   templateUrl: './video.component.html',
   styleUrl: './video.component.scss'
 })
 export class VideoComponent {
 
-    /**
-   * Input property that defines the video details, including the title, description, video file,
-   * thumbnail image, and creation date.
-   */
+  /**
+ * Input property that defines the video details, including the title, description, video file,
+ * thumbnail image, and creation date.
+ */
   @Input() video: {
     id: string,
     title: string,
     description: string,
     video_file: string,
     thumbnail: string,
-    created_at: string,    
+    created_at: string,
+    played_time: number,
+    duration:number,
+    watched: boolean,
   }
 
-    /**
-   * Creates an instance of VideoComponent.
-   * Initializes the video input property with default values.
-   * @param videoService The service responsible for controlling video playback and preview.
-   */
+  barWith: string = '';
+
+  /**
+ * Creates an instance of VideoComponent.
+ * Initializes the video input property with default values.
+ * @param videoService The service responsible for controlling video playback and preview.
+ */
   constructor(
     private videoService: VideoplayService,
   ) {
@@ -42,27 +50,43 @@ export class VideoComponent {
       video_file: '',
       thumbnail: '',
       created_at: '',
+      played_time: 0,
+      duration: 0,
+      watched: false,
     }
   }
 
-    /**
-   * Starts playing the selected video. This method updates the video service to 
-   * indicate that the video content should be played and loads the selected video.
-   * 
-   * @param videoElement The video element that is being played.
-   */
+  ngOnInit() {
+    // console.log('SingleVideo',this.video);
+    if (this.video.watched) { // Gesamtspielzeit in Sekunden
+          console.log(this.video.played_time);
+          let progress = (this.video.played_time * 100) / this.video.duration;
+          console.log(progress);
+          this.barWith = `${progress}%`         
+
+        
+      // };
+    }
+  }
+
+  /**
+ * Starts playing the selected video. This method updates the video service to 
+ * indicate that the video content should be played and loads the selected video.
+ * 
+ * @param videoElement The video element that is being played.
+ */
   playVideo(videoElement: any) {
     this.videoService.loadContent = false;
     this.videoService.playVideo = true;
     this.videoService.videoContent = videoElement.video;
   }
 
-    /**
-   * Changes the preview video. Updates the video service to set the new video for preview.
-   * 
-   * @param videoElement The video element that should be used as the new preview video.
-   */
-  changePreviewVideo(videoElement: any) {  
+  /**
+ * Changes the preview video. Updates the video service to set the new video for preview.
+ * 
+ * @param videoElement The video element that should be used as the new preview video.
+ */
+  changePreviewVideo(videoElement: any) {
     this.videoService.previewVideo = videoElement.video
   }
 }

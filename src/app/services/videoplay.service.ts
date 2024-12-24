@@ -44,6 +44,12 @@ export class VideoplayService {
    * Includes title, description, video file, thumbnail, and creation date.
    */
   videoContent: {id?: number, title?: string, description?: string, video_file?: string, thumbnail?: string, created_at?: string } = {};
+  
+  /**
+   * An object containing information about the continue watching video content.
+   * Includes title, description, video file, thumbnail, and creation date.
+   */
+  videoContentContinue: {id?: number, title?: string, description?: string, video_file?: string, thumbnail?: string, created_at?: string } = {};
 
   /**
    * An object containing information about the currently previewed video.

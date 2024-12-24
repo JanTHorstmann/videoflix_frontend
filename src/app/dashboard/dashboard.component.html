@@ -3,6 +3,8 @@
     <app-previewvideo></app-previewvideo>
 
     <div class="video-content">
+        <app-videoslideshow *ngIf="continueWatching" [categoryName]="'Continue Watching'" [videos]="continueWatchingVideos"></app-videoslideshow>
+
         <app-videoslideshow [categoryName]="'New on Videoflix'" [videos]="videos"></app-videoslideshow>
 
         <app-videoslideshow *ngFor="let category of getCategories()" [categoryName]="category"

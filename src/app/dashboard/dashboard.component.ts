@@ -41,6 +41,9 @@ export class DashboardComponent {
    */
   videos: any[] = [];
 
+  continueWatchingVideos: any[] = [];
+  continueWatching: boolean = false;
+
   /**
    * A string representing the visibility of the navbar button. The default is hidden.
    */
@@ -70,6 +73,52 @@ export class DashboardComponent {
       this.token = session_token;
     }
     this.loadVideoContent();
+    this.loadWatchedVideos();
+  }
+
+  loadWatchedVideos() {
+    const headers = new HttpHeaders().set('Authorization', `Token ${this.token}`);
+    this.http.get(`${environment.videoProgessURL}`, { headers }).subscribe({
+      next: (response: any) => {
+        if (response.length == 0) {
+          console.log('continueWatchingVideos is empty');
+
+        } else {
+          this.findWatchedVideos(response);
+          console.log('continueWatchingVideos', this.continueWatchingVideos);
+          console.log('Videos', this.videos);
+          this.continueWatching = true
+        }
+        
+      },
+      error: (error) => {
+        console.error('Fehler beim Content', error);
+      }
+    });
+  }
+
+  findWatchedVideos(watchedVideos: any) {
+    this.continueWatchingVideos = [];
+    this.videos.forEach((video) => {
+      watchedVideos.forEach((watched: any) => {
+        if (video.id === watched.video_id) {  // Überprüfe, ob die IDs übereinstimmen 
+          let watchedVideo = {
+            id: video.id,
+            title: video.title,
+            description: video.description,
+            video_file: video.video_file,
+            thumbnail: video.thumbnail,
+            created_at: video.created_at,
+            played_time: watched.played_time,
+            duration: watched.duration,
+            watched: true,
+          }         
+          this.continueWatchingVideos.push(watchedVideo);  // Füge das Video zu continueWatchingVideos hinzu
+        }
+      })
+    })
+    console.log(this.videos);
+    console.log(this.continueWatchingVideos);    
   }
 
   /**
@@ -98,6 +147,7 @@ export class DashboardComponent {
    */
   groupVideosByCategory() {
     this.videos.forEach((video) => {
+      video.watched = false;
       console.log('Video:', video);
       
       const category = video.category || 'Uncategorized';
