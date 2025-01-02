@@ -5,12 +5,16 @@ import { VgControlsModule } from '@videogular/ngx-videogular/controls';
 import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 import * as dashjs from 'dashjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-videoplayer',
   standalone: true,
   imports: [
+    CommonModule,
     VgCoreModule,
     VgControlsModule,
     VgOverlayPlayModule,
@@ -21,10 +25,11 @@ import { HttpClient } from '@angular/common/http';
 })
 export class VideoplayerComponent {
 
-  @ViewChild('videoPlayer', { static: true }) videoPlayer!: ElementRef<IMediaElement>;
+  @ViewChild('videoPlayer', { static: false }) videoPlayer: any;
   videoProgressInterval: any;
   dashPlayer!: any;
-  api: VgApiService = new VgApiService;
+  api!: VgApiService;
+  subscriptions: Subscription = new Subscription();
 
   dashBitrates: BitrateOptions[] = [
     { qualityIndex: 0, height: 1080, width: 1920, bitrate: 3000000, label: '1080p', mediaType: 'video' },
@@ -45,61 +50,120 @@ export class VideoplayerComponent {
   videoSrc_1080p = '';
 
 
-  onPlayerReady(source: VgApiService) {
-    this.api = source;
-    console.log('onPlayerReady');
-    this.api.getDefaultMedia().subscriptions.loadedMetadata.subscribe(
-      this.autoplay.bind(this)
-    )
-  }
 
-  autoplay() {
-    console.log('play');
-    this.api.play();
-  }
 
   constructor(
     public videoService: VideoplayService,
     private http: HttpClient,
   ) {
     this.getVideoQuality();
+    console.log('Watched?', this.videoService.videoContent.watched);
+    console.log('Time:', this.videoService.videoStartTime);
   }
 
-  ngOnInit() {
+  // ngAfterViewInit() {
+  //   if (this.videoPlayer.nativeElement && this.videoPlayer.nativeElement instanceof HTMLMediaElement) {
+  //     if (typeof window !== 'undefined') {
+  //       import('dashjs').then(dashjs => {
+  //         this.dashPlayer = dashjs.MediaPlayer().create();
+  //         this.dashPlayer.initialize(this.videoPlayer.nativeElement, this.videoService.videoContent.video_file, true);
+  //         // this.dashPlayer.initialize(this.videoPlayer.nativeElement, this.videoService.videoContent.video_file, this.videoService.videoStartTime, true);
+  //         this.dashPlayer.play();
+  //         // this.videoPlayer.nativeElement.currentTime = this.videoService.videoStartTime
 
-    if (this.videoPlayer.nativeElement && this.videoPlayer.nativeElement instanceof HTMLMediaElement) {
+  //       }).catch(err => console.error('Failed to load Dash.js:', err));
+  //     } else {
+  //       console.log('Dash.js is not initialized because the code is running on the server.');
+  //     }
+  //     // this.trackVideoProgress();
+  //   }
+  // }
 
-      if (typeof window !== 'undefined') {
-        import('dashjs').then(dashjs => {
-          this.dashPlayer = dashjs.MediaPlayer().create();
-          this.dashPlayer.initialize(this.videoPlayer.nativeElement, this.videoService.videoContent.video_file, true);
-        }).catch(err => console.error('Failed to load Dash.js:', err));
-      } else {
-        console.log('Dash.js is not initialized because the code is running on the server.');
+  onPlayerReady(api: VgApiService) {
+    const headers = new HttpHeaders().set('Authorization', `Token ${this.videoService.auth_token}`);
+    this.api = api;
+    const loadStartSub = this.api.getDefaultMedia().subscriptions.loadedData.subscribe(() => {
+      if (this.videoService.videoStartTime) {
+        console.log('CurrentTime:', this.api.getDefaultMedia().currentTime);
+        console.log('StartTime:', this.videoService.videoStartTime);
+        this.api.getDefaultMedia().currentTime = this.videoService.videoStartTime;
+        console.log('CurrentTime:', this.api.getDefaultMedia().currentTime);
+        console.log('StartTime:', this.videoService.videoStartTime);
       }
-      this.trackVideoProgress();      
-    }
+      this.api.getDefaultMedia().play()
+      // setTimeout(() => {
+      // }, 5000);
+    });
+
+    const endedSub = this.api.getDefaultMedia().subscriptions.ended.subscribe(() => {
+      this.deleteVideoProgess(headers);          
+    });
+
+    const timeUpdateSub = this.api.getDefaultMedia().subscriptions.timeUpdate.subscribe(() => {
+
+      const progressData = {
+        video_id: this.videoService.videoContent.id,
+        played_time: this.videoPlayer.nativeElement.currentTime,
+        duration: this.videoPlayer.nativeElement.duration,
+      };
+      this.updateVideoProgess(progressData, headers);        
+    });
+
+    this.subscriptions.add(loadStartSub);
+    this.subscriptions.add(endedSub);
+    this.subscriptions.add(timeUpdateSub);
   }
 
-  trackVideoProgress() {
-    // Upload video progress every 2 seconds
-    this.videoProgressInterval = setInterval(() => {
-      const videoElement = this.videoPlayer.nativeElement;
 
-      if (!videoElement.paused && videoElement.currentTime) {
-        const progressData = {
-          video_id: this.videoService.videoContent.id, // Assuming the videoContent has an `id`
-          played_time: videoElement.currentTime,
-        };
-        console.log(this.videoService.videoContent.id);
-        
+  // trackVideoProgress() {
+  //   const headers = new HttpHeaders().set('Authorization', `Token ${this.videoService.auth_token}`);
+  //   this.videoProgressInterval = setInterval(() => {
+  //     const videoElement = this.videoPlayer.nativeElement;
+  //     const progressData = {
+  //       video_id: this.videoService.videoContent.id,
+  //       played_time: videoElement.currentTime,
+  //       duration: videoElement.duration,
+  //     };
+  //     if (videoElement.currentTime == videoElement.duration) {
+  //       // this.deleteVideoProgess();
+  //       // this.dashPlayer.pause();
+  //     } else {
+  //       if (!videoElement.paused && videoElement.currentTime) {
+  //         this.updateVideoProgess(progressData, headers);
+  //       }
+  //     }
+  //   }, 2000);
+  // }
 
-        // this.http.post('/api/video-progress/update_progress/', progressData).subscribe(
-        //   (response) => console.log('Progress updated:', response),
-        //   (error) => console.error('Error updating progress:', error)
-        // );
+  deleteVideoProgess(headers: HttpHeaders) {
+    this.http.delete(`${environment.videoProgessURL}${this.videoService.videoContent.id}/delete_progress/`, { headers }).subscribe({
+      next: () => {
+        console.log('Progress deleted successfully');
+        if (this.videoProgressInterval) {
+          clearInterval(this.videoProgressInterval);
+        }
+      },
+      error: (err) => {
+        console.error('Error deleting progress:', err);
+        if (this.videoProgressInterval) {
+          clearInterval(this.videoProgressInterval);
+        }
+      },
+    });
+  }
+
+  updateVideoProgess(progressData: any, headers: HttpHeaders) {
+    this.http.post(`${environment.videoProgessURL}`, progressData, { headers }).subscribe({
+      next: (response: any) => {
+        // console.log('Progress updated:', response);
+      },
+      error: (error) => {
+        console.error('Error updating progress:', error);
+        if (this.videoProgressInterval) {
+          clearInterval(this.videoProgressInterval);
+        }
       }
-    }, 2000);
+    });
   }
 
   getVideoQuality() {
@@ -114,12 +178,9 @@ export class VideoplayerComponent {
 
   setBitrate(bitrate: any) {
     console.log('Selected Bitrate:', bitrate);
-  
+
     if (this.dashPlayer) {
-      // Setzt die Qualität im DASH-Player
       this.dashPlayer.setQualityFor('video', bitrate.qualityIndex);
-  
-      // Aktualisiert die Videoquelle basierend auf der gewählten Qualität
       if (bitrate.label === '1080p') {
         this.updateVideoSource(this.videoSrc_1080p);
       } else if (bitrate.label === '720p') {
@@ -136,18 +197,12 @@ export class VideoplayerComponent {
 
   updateVideoSource(newSource: string) {
     if (this.videoPlayer && this.videoPlayer.nativeElement instanceof HTMLMediaElement) {
-      console.log(this.videoPlayer.nativeElement.currentTime);      
-      console.log(this.videoService.videoContent.video_file);      
       let currentPlayedTime = this.videoPlayer.nativeElement.currentTime;
-      // this.videoPlayer.nativeElement.src = newSource; // Setzt die neue Quelle
       this.videoService.videoContent.video_file = newSource;
-      this.videoPlayer.nativeElement.load();         // Lädt das Video neu
-      this.videoPlayer.nativeElement.play().then( () => {
+      this.videoPlayer.nativeElement.load();
+      this.videoPlayer.nativeElement.play().then(() => {
         this.videoPlayer.nativeElement.currentTime = currentPlayedTime;
-      });         // Startet die Wiedergabe automatisch (optional)
-      console.log(this.videoPlayer.nativeElement.currentTime);
-      console.log(this.videoService.videoContent.video_file);
-      console.log('Video source updated to:', newSource);
+      });
     } else {
       console.error('Video player element is not a valid HTMLMediaElement!');
     }
@@ -157,6 +212,9 @@ export class VideoplayerComponent {
     // Clear the interval when the component is destroyed
     if (this.videoProgressInterval) {
       clearInterval(this.videoProgressInterval);
+    }
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
     }
   }
 }

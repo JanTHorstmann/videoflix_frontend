@@ -4,7 +4,7 @@
     </video>    
 </div> -->
 
-<vg-player (onPlayerReady)="onPlayerReady($event)">
+<vg-player  (onPlayerReady)="onPlayerReady($event)">
     <vg-overlay-play></vg-overlay-play>
     <vg-buffering></vg-buffering>
 
@@ -36,10 +36,10 @@
         <vg-fullscreen></vg-fullscreen>
     </vg-controls>
 
-    <video #videoPlayer [vgMedia]="$any(videoPlayer)" id="videoPlayer" preload="auto" crossorigin>
+    <video *ngIf="videoService.videoContent.watched" #videoPlayer [autoplay]="false" [vgMedia]="$any(videoPlayer)" id="videoPlayer" preload="auto" crossorigin>
         <source [src]="videoService.videoContent.video_file" type="video/mp4">
-
-        <!-- <track kind="subtitles" label="English" src="http://static.videogular.com/assets/subs/pale-blue-dot.vtt" srclang="en" default> -->
-        <!-- <track kind="subtitles" label="Español" src="http://static.videogular.com/assets/subs/pale-blue-dot-es.vtt" srclang="es"> -->
+    </video>
+    <video *ngIf="!videoService.videoContent.watched" #videoPlayer [autoplay]="false" [vgMedia]="$any(videoPlayer)" id="videoPlayer" preload="auto" crossorigin>
+        <source [src]="videoService.videoContent.video_file" type="video/mp4">
     </video>
 </vg-player>

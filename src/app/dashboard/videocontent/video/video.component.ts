@@ -29,7 +29,7 @@ export class VideoComponent {
     thumbnail: string,
     created_at: string,
     played_time: number,
-    duration:number,
+    duration: number,
     watched: boolean,
   }
 
@@ -57,15 +57,13 @@ export class VideoComponent {
   }
 
   ngOnInit() {
-    // console.log('SingleVideo',this.video);
-    if (this.video.watched) { // Gesamtspielzeit in Sekunden
-          console.log(this.video.played_time);
-          let progress = (this.video.played_time * 100) / this.video.duration;
-          console.log(progress);
-          this.barWith = `${progress}%`         
+    this.calculateProgressBar();
+  }
 
-        
-      // };
+  calculateProgressBar() {
+    if (this.video.watched) {
+      let progress = (this.video.played_time * 100) / this.video.duration;
+      this.barWith = `${progress}%`;
     }
   }
 
@@ -76,6 +74,10 @@ export class VideoComponent {
  * @param videoElement The video element that is being played.
  */
   playVideo(videoElement: any) {
+    if (this.video.watched) {
+      this.videoService.videoStartTime = this.video.played_time;
+    }
+    
     this.videoService.loadContent = false;
     this.videoService.playVideo = true;
     this.videoService.videoContent = videoElement.video;
