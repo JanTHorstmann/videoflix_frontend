@@ -10,6 +10,14 @@ import { environment } from '../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 
+/**
+ * @description This component is responsible for rendering and managing the video player.
+ * It supports functionalities like video quality switching, playback tracking, and progress saving.
+ * The component uses Videogular's API for video playback control and interacts with a backend service
+ * to update or delete video progress data.
+ * 
+ * @class VideoplayerComponent
+ */
 @Component({
   selector: 'app-videoplayer',
   standalone: true,
@@ -25,35 +33,49 @@ import { Subscription } from 'rxjs';
 })
 export class VideoplayerComponent {
 
+  /** Reference to the video player element */
   @ViewChild('videoPlayer', { static: false }) videoPlayer: any;
 
+  /** Timer for video progress tracking */
   videoProgressInterval: any;
+
+  /** DASH.js player instance for adaptive bitrate streaming */
   dashPlayer!: any;
+
+  /** Instance of Videogular's API service */
   api!: VgApiService;
+
+  /** Container for managing subscriptions */
   subscriptions: Subscription = new Subscription();
-  
+
+  /** Available DASH video bitrate options */
   dashBitrates: BitrateOptions[] = [
     { qualityIndex: 0, height: 1080, width: 1920, bitrate: 3000000, label: '1080p', mediaType: 'video' },
     { qualityIndex: 1, height: 720, width: 1280, bitrate: 1500000, label: '720p', mediaType: 'video' },
     { qualityIndex: 2, height: 360, width: 640, bitrate: 800000, label: '360p', mediaType: 'video' },
     { qualityIndex: 3, height: 120, width: 160, bitrate: 200000, label: '120p', mediaType: 'video' },
   ];
-  
+
+  /** Video duration in seconds */
   videoDuration!: number;
+
+  /** Current playback time in seconds */
   videoCurrentTime!: number;
-  
+
+  /** URLs for different video quality levels */
   videoSrc_120p = '';
-  
   videoSrc_360p = '';
-  
   videoSrc_720p = '';
-  
   videoSrc_1080p = '';
-  
-  
-  
-  
+
+  /** Flag to determine if the user is asked to continue watching */
   askForContinue: boolean;
+
+  /**
+   * @constructor
+   * @param {VideoplayService} videoService - Service to manage video playback data.
+   * @param {HttpClient} http - Angular's HTTP client for API interactions.
+   */
   constructor(
     public videoService: VideoplayService,
     private http: HttpClient,
@@ -65,6 +87,11 @@ export class VideoplayerComponent {
 
   }
 
+  /**
+   * Initializes the video player with Videogular's API.
+   * Sets up subscriptions for player events like `loadedData`, `timeUpdate`, and `ended`.
+   * @param {VgApiService} api - The API instance for controlling the video player.
+   */
   onPlayerReady(api: VgApiService) {
     const headers = new HttpHeaders().set('Authorization', `Token ${this.videoService.auth_token}`);
     this.api = api;
@@ -76,6 +103,9 @@ export class VideoplayerComponent {
     }
   }
 
+  /**
+   * Subscribes to the `loadedData` event and sets the video start time if applicable
+   */
   loadDataSub() {
     const loadStartSub = this.api.getDefaultMedia().subscriptions.loadedData.subscribe(() => {
       if (this.videoService.videoStartTime >= 0 && this.videoService.videoContent.watched) {
@@ -88,6 +118,10 @@ export class VideoplayerComponent {
     this.subscriptions.add(loadStartSub);
   }
 
+  /**
+   * Subscribes to the `timeUpdate` event and updates video progress on the server.
+   * @param {HttpHeaders} headers - HTTP headers containing the authentication token.
+   */
   timeUpdateSub(headers: HttpHeaders) {
     const timeUpdateSub = this.api.getDefaultMedia().subscriptions.timeUpdate.subscribe(() => {
       const progressData = {
@@ -100,6 +134,10 @@ export class VideoplayerComponent {
     this.subscriptions.add(timeUpdateSub);
   }
 
+  /**
+   * Subscribes to the `ended` event and deletes video progress on the server.
+   * @param {HttpHeaders} headers - HTTP headers containing the authentication token.
+   */
   endedVideoSub(headers: HttpHeaders) {
     const endedSub = this.api.getDefaultMedia().subscriptions.ended.subscribe(() => {
       this.deleteVideoProgess(headers);
@@ -107,6 +145,10 @@ export class VideoplayerComponent {
     this.subscriptions.add(endedSub);
   }
 
+  /**
+   * Resumes video playback from a specified time or restarts playback.
+   * @param {number} time - The time in seconds to start playback from.
+   */
   continueOrStartAgain(time: number) {
     this.askForContinue = false;
     console.log(this.api.currentTime);
@@ -115,6 +157,10 @@ export class VideoplayerComponent {
     this.api.getDefaultMedia().play();
   }
 
+  /**
+   * Deletes video progress data from the server.
+   * @param {HttpHeaders} headers - HTTP headers containing the authentication token.
+   */
   deleteVideoProgess(headers: HttpHeaders) {
     this.http.delete(`${environment.videoProgessURL}${this.videoService.videoContent.id}/delete_progress/`, { headers }).subscribe({
       next: () => {
@@ -132,6 +178,11 @@ export class VideoplayerComponent {
     });
   }
 
+  /**
+   * Updates video progress data on the server.
+   * @param {any} progressData - The progress data object containing `video_id`, `played_time`, and `duration`.
+   * @param {HttpHeaders} headers - HTTP headers containing the authentication token.
+   */
   updateVideoProgess(progressData: any, headers: HttpHeaders) {
     this.http.post(`${environment.videoProgessURL}`, progressData, { headers }).subscribe({
       next: (response: any) => {
@@ -146,6 +197,9 @@ export class VideoplayerComponent {
     });
   }
 
+  /**
+   * Generates URLs for different video quality levels based on the video file name.
+   */
   getVideoQuality() {
     if (this.videoService.videoContent.video_file) {
       let src = this.videoService.videoContent.video_file.split('.mp4');
@@ -156,6 +210,10 @@ export class VideoplayerComponent {
     }
   }
 
+  /**
+   * Changes the video bitrate and updates the video source.
+   * @param {any} bitrate - The selected bitrate option.
+   */
   setBitrate(bitrate: any) {
     console.log('Selected Bitrate:', bitrate);
 
@@ -175,6 +233,10 @@ export class VideoplayerComponent {
     }
   }
 
+  /**
+   * Updates the video player with a new source and maintains playback position.
+   * @param {string} newSource - The new video source URL.
+   */
   updateVideoSource(newSource: string) {
     if (this.videoPlayer && this.videoPlayer.nativeElement instanceof HTMLMediaElement) {
       let currentPlayedTime = this.videoPlayer.nativeElement.currentTime;
@@ -188,6 +250,9 @@ export class VideoplayerComponent {
     }
   }
 
+  /**
+   * Cleans up resources when the component is destroyed.
+   */
   ngOnDestroy() {
     // Clear the interval when the component is destroyed
     if (this.videoProgressInterval) {

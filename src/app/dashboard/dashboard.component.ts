@@ -8,7 +8,11 @@ import { VideoslideshowComponent } from './videocontent/videoslideshow/videoslid
 import { VideoplayService } from '../services/videoplay.service';
 import { VideoplayerComponent } from './videoplayer/videoplayer.component';
 
-
+/**
+ * DashboardComponent is responsible for managing the dashboard view, 
+ * which includes displaying videos, grouping them by category, 
+ * and handling the "Continue Watching" functionality.
+ */
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -25,14 +29,29 @@ import { VideoplayerComponent } from './videoplayer/videoplayer.component';
 })
 export class DashboardComponent {
 
+  /** Token for user authentication */
   token: string = '';
+
+  /** List of all videos fetched from the server */
   videos: any[] = [];
 
+  /** List of videos the user has partially watched */
   continueWatchingVideos: any[] = [];
+
+  /** Flag to determine if the "Continue Watching" section should be displayed */
   continueWatching: boolean = false;
+
+  /** Inline CSS for the navbar button */
   navbarButton: string = 'display: none;';
+
+  /** Object grouping videos by their categories */
   groupedVideos: { [category: string]: any[] } = {};
 
+  /**
+   * Constructor to initialize dependencies and load video content.
+   * @param http - Angular's HttpClient for making HTTP requests
+   * @param videoService - Service for managing video playback and state
+   */
   constructor(
     private http: HttpClient,
     public videoService: VideoplayService,
@@ -49,6 +68,9 @@ export class DashboardComponent {
     this.loadWatchedVideos();
   }
 
+  /**
+   * Loads the list of watched videos from the server and updates the "Continue Watching" section.
+   */
   loadWatchedVideos() {
     const headers = new HttpHeaders().set('Authorization', `Token ${this.videoService.auth_token}`);
     this.http.get(`${environment.videoProgessURL}`, { headers }).subscribe({
@@ -56,7 +78,7 @@ export class DashboardComponent {
         if (response.length > 0) {
           this.findWatchedVideos(response);
           this.continueWatching = true
-        }        
+        }
       },
       error: (error) => {
         console.error('Fehler beim Content', error);
@@ -64,6 +86,10 @@ export class DashboardComponent {
     });
   }
 
+  /**
+   * Matches watched videos with the full list of videos and updates the "Continue Watching" list.
+   * @param watchedVideos - List of videos with progress data
+   */
   findWatchedVideos(watchedVideos: any) {
     this.continueWatchingVideos = [];
     this.videos.forEach((video) => {
@@ -79,13 +105,16 @@ export class DashboardComponent {
             played_time: watched.played_time,
             duration: watched.duration,
             watched: true,
-          }         
+          }
           this.continueWatchingVideos.push(watchedVideo);  // Füge das Video zu continueWatchingVideos hinzu          
         }
       })
     })
   }
 
+  /**
+   * Loads the full video content from the server.
+   */
   loadVideoContent() {
     const headers = new HttpHeaders().set('Authorization', `Token ${this.videoService.auth_token}`);
     this.http.get(`${environment.videoContentURL}`, { headers }).subscribe({
@@ -102,11 +131,14 @@ export class DashboardComponent {
     });
   }
 
+  /**
+   * Groups videos by their categories and sorts them within each category by creation date.
+   */
   groupVideosByCategory() {
     this.groupedVideos = {};
     this.videos.forEach((video) => {
       video.watched = false;
-      
+
       const category = video.category || 'Uncategorized';
       if (!this.groupedVideos[category]) {
         this.groupedVideos[category] = [];
@@ -122,6 +154,9 @@ export class DashboardComponent {
     }
   }
 
+  /**
+   * Sorts the video list by their creation date.
+   */
   sortByDate() {
     this.videos.sort((a, b) => {
       const dateA = new Date(a.created_at);
@@ -130,10 +165,17 @@ export class DashboardComponent {
     });
   }
 
+  /**
+   * Retrieves the list of video categories.
+   * @returns Array of category names
+   */
   getCategories(): string[] {
     return Object.keys(this.groupedVideos);
   }
 
+  /**
+   * Reloads the video content and watched videos, returning the user to the main video selection view.
+   */
   backToVideoSelection() {
     this.loadVideoContent();
     this.loadWatchedVideos();
