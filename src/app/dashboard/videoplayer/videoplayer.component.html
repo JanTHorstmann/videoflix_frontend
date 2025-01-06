@@ -36,10 +36,22 @@
         <vg-fullscreen></vg-fullscreen>
     </vg-controls>
 
-    <video *ngIf="videoService.videoContent.watched" #videoPlayer [autoplay]="false" [vgMedia]="$any(videoPlayer)" id="videoPlayer" preload="auto" crossorigin>
-        <source [src]="videoService.videoContent.video_file" type="video/mp4">
-    </video>
-    <video *ngIf="!videoService.videoContent.watched" #videoPlayer [autoplay]="false" [vgMedia]="$any(videoPlayer)" id="videoPlayer" preload="auto" crossorigin>
+    <video #videoPlayer [autoplay]="false" [vgMedia]="$any(videoPlayer)" id="videoPlayer" preload="auto" crossorigin>
         <source [src]="videoService.videoContent.video_file" type="video/mp4">
     </video>
 </vg-player>
+
+<div class="toast-for-continue" *ngIf="askForContinue">
+    <div class="toast-banner">
+        <div class="banner-left"></div>
+        <div class="banner-right">
+            <img src="assets/img/alert.png" alt="">
+            <span>Would you like to continue this video?</span>
+            <div class="processing-buttons">
+                <button class="button-confirm" (click)="continueOrStartAgain(videoService.videoStartTime)">Continue</button>
+                <span></span>
+                <button class="button-cancel" (click)="continueOrStartAgain(0)">X</button>
+            </div>
+        </div>
+    </div>
+</div>
