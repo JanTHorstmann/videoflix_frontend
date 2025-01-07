@@ -81,10 +81,29 @@ export class VideoplayerComponent {
     private http: HttpClient,
   ) {
     this.getVideoQuality();
-    console.log('Watched?', this.videoService.videoContent.watched);
-    console.log('Time:', this.videoService.videoStartTime);
     this.askForContinue = this.videoService.videoContent.watched ?? false;
 
+  }
+
+  /**
+   * Initializes the Dash.js player after the view has been fully initialized.
+   * 
+   * - Checks if the `videoPlayer` is a valid HTMLMediaElement.
+   * - Dynamically imports the Dash.js library if running in a browser environment.
+   * - Creates a Dash.js player instance and initializes it with the media element and video file.
+   * - Logs an error if Dash.js fails to load or if the code is running on the server.
+   */
+  ngAfterViewInit() {
+    if (this.videoPlayer.nativeElement && this.videoPlayer.nativeElement instanceof HTMLMediaElement) {
+      if (typeof window !== 'undefined') {
+        import('dashjs').then(dashjs => {
+          this.dashPlayer = dashjs.MediaPlayer().create();
+          this.dashPlayer.initialize(this.videoPlayer.nativeElement, this.videoService.videoContent.video_file, true);
+        }).catch(err => console.error('Failed to load Dash.js:', err));
+      } else {
+        console.log('Dash.js is not initialized because the code is running on the server.');
+      }
+    }
   }
 
   /**
@@ -109,10 +128,7 @@ export class VideoplayerComponent {
   loadDataSub() {
     const loadStartSub = this.api.getDefaultMedia().subscriptions.loadedData.subscribe(() => {
       if (this.videoService.videoStartTime >= 0 && this.videoService.videoContent.watched) {
-        console.log('CurrentTime:', this.api.getDefaultMedia().currentTime);
-        console.log('StartTime:', this.videoService.videoStartTime);
         this.api.currentTime = this.videoService.videoStartTime;
-        console.log('CurrentTime after:', this.api.getDefaultMedia().currentTime);
       }
     });
     this.subscriptions.add(loadStartSub);
@@ -129,7 +145,9 @@ export class VideoplayerComponent {
         played_time: this.videoPlayer.nativeElement.currentTime,
         duration: this.videoPlayer.nativeElement.duration,
       };
-      this.updateVideoProgess(progressData, headers);
+      if (progressData.video_id && progressData.played_time && progressData.duration) {
+        this.updateVideoProgess(progressData, headers);
+      }
     });
     this.subscriptions.add(timeUpdateSub);
   }
@@ -151,9 +169,7 @@ export class VideoplayerComponent {
    */
   continueOrStartAgain(time: number) {
     this.askForContinue = false;
-    console.log(this.api.currentTime);
     this.api.currentTime = time;
-    console.log(this.api.currentTime);
     this.api.getDefaultMedia().play();
   }
 
@@ -164,7 +180,6 @@ export class VideoplayerComponent {
   deleteVideoProgess(headers: HttpHeaders) {
     this.http.delete(`${environment.videoProgessURL}${this.videoService.videoContent.id}/delete_progress/`, { headers }).subscribe({
       next: () => {
-        console.log('Progress deleted successfully');
         if (this.videoProgressInterval) {
           clearInterval(this.videoProgressInterval);
         }
@@ -215,8 +230,6 @@ export class VideoplayerComponent {
    * @param {any} bitrate - The selected bitrate option.
    */
   setBitrate(bitrate: any) {
-    console.log('Selected Bitrate:', bitrate);
-
     if (this.dashPlayer) {
       this.dashPlayer.setQualityFor('video', bitrate.qualityIndex);
       if (bitrate.label === '1080p') {
