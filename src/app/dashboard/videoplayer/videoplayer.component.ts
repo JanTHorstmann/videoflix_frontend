@@ -267,7 +267,6 @@ export class VideoplayerComponent {
    * Cleans up resources when the component is destroyed.
    */
   ngOnDestroy() {
-    // Clear the interval when the component is destroyed
     if (this.videoProgressInterval) {
       clearInterval(this.videoProgressInterval);
     }
