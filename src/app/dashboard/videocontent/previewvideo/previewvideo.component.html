@@ -1,8 +1,10 @@
 <div class="content">
-
-  <video #previewVideoPlayer [muted]="true" autoplay="false" (loadedmetadata)="playInRange(previewVideoPlayer)">
-    <source [src]="videoService.previewVideo.video_file" type="video/mp4">
-  </video>
+  <div class="video-shadow-container">
+    <div class="shadow-container-left"></div>
+    <video #previewVideoPlayer [muted]="true" autoplay="false" (loadedmetadata)="playInRange(previewVideoPlayer)">
+      <source [src]="videoService.previewVideo.video_file" type="video/mp4">
+    </video>
+  </div>
 
   <div class="video-description">
     <h1>{{ videoService.previewVideo.title }}</h1>
@@ -14,7 +16,7 @@
         Play
       </button>
     </div>
-    
+
   </div>
 
 </div>
