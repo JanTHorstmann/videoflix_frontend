@@ -128,7 +128,8 @@ export class VideoplayerComponent {
   loadDataSub() {
     const loadStartSub = this.api.getDefaultMedia().subscriptions.loadedData.subscribe(() => {
       if (this.videoService.videoStartTime >= 0 && this.videoService.videoContent.watched) {
-        this.api.currentTime = this.videoService.videoStartTime;
+        const mediaElement = this.videoPlayer.nativeElement;
+        mediaElement.currentTime = this.videoService.videoStartTime;        
       }
     });
     this.subscriptions.add(loadStartSub);
@@ -169,6 +170,7 @@ export class VideoplayerComponent {
    */
   continueOrStartAgain(time: number) {
     this.askForContinue = false;
+    this.videoPlayer.nativeElement.currentTime = time;
     this.api.currentTime = time;
     this.api.getDefaultMedia().play();
   }
@@ -252,12 +254,16 @@ export class VideoplayerComponent {
    */
   updateVideoSource(newSource: string) {
     if (this.videoPlayer && this.videoPlayer.nativeElement instanceof HTMLMediaElement) {
-      let currentPlayedTime = this.videoPlayer.nativeElement.currentTime;
-      this.videoService.videoContent.video_file = newSource;
-      this.videoPlayer.nativeElement.load();
-      this.videoPlayer.nativeElement.play().then(() => {
-        this.videoPlayer.nativeElement.currentTime = currentPlayedTime;
-      });
+      const mediaElement = this.videoPlayer.nativeElement;
+      const currentTime = mediaElement.currentTime;
+      mediaElement.src = newSource;
+      mediaElement.load();
+      mediaElement.onloadeddata = () => {
+        mediaElement.currentTime = currentTime;
+        mediaElement.play().catch((err: any) => {
+          console.error('Error resuming playback:', err);
+        });
+      };
     } else {
       console.error('Video player element is not a valid HTMLMediaElement!');
     }
