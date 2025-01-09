@@ -1,4 +1,4 @@
-<div class="content" (mouseenter)="changePreviewVideo(this)">
+<div class="content" (mouseenter)="changePreviewVideo(this)" (mouseleave)="clearTimeOut()">
     <div class="img-container">
         <img [src]="video.thumbnail" alt="" (click)="playVideo(this)">
         <div class="progressbar" [style]="{'width': barWith}" *ngIf="video.watched"></div>

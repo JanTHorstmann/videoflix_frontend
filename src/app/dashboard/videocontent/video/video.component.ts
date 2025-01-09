@@ -56,6 +56,8 @@ export class VideoComponent {
     }
   }
 
+  timeOutChange: any;
+
   ngOnInit() {
     this.calculateProgressBar();
   }
@@ -89,6 +91,16 @@ export class VideoComponent {
  * @param videoElement The video element that should be used as the new preview video.
  */
   changePreviewVideo(videoElement: any) {
-    this.videoService.previewVideo = videoElement.video
+    this.timeOutChange = setTimeout(() => {
+      
+      this.videoService.previewVideo = videoElement.video
+    }, 1000);
+  }
+
+  clearTimeOut() {
+    if (this.timeOutChange) {
+      clearTimeout(this.timeOutChange);
+      this.timeOutChange = null; // Optional: Setze die Timeout-ID auf null, um anzuzeigen, dass der Timeout gelöscht wurde.
+    }
   }
 }
