@@ -86,27 +86,6 @@ export class VideoplayerComponent {
   }
 
   /**
-   * Initializes the Dash.js player after the view has been fully initialized.
-   * 
-   * - Checks if the `videoPlayer` is a valid HTMLMediaElement.
-   * - Dynamically imports the Dash.js library if running in a browser environment.
-   * - Creates a Dash.js player instance and initializes it with the media element and video file.
-   * - Logs an error if Dash.js fails to load or if the code is running on the server.
-   */
-  ngAfterViewInit() {
-    if (this.videoPlayer.nativeElement && this.videoPlayer.nativeElement instanceof HTMLMediaElement) {
-      if (typeof window !== 'undefined') {
-        import('dashjs').then(dashjs => {
-          this.dashPlayer = dashjs.MediaPlayer().create();
-          this.dashPlayer.initialize(this.videoPlayer.nativeElement, this.videoService.videoContent.video_file, true);
-        }).catch(err => console.error('Failed to load Dash.js:', err));
-      } else {
-        console.log('Dash.js is not initialized because the code is running on the server.');
-      }
-    }
-  }
-
-  /**
    * Initializes the video player with Videogular's API.
    * Sets up subscriptions for player events like `loadedData`, `timeUpdate`, and `ended`.
    * @param {VgApiService} api - The API instance for controlling the video player.
@@ -129,7 +108,7 @@ export class VideoplayerComponent {
     const loadStartSub = this.api.getDefaultMedia().subscriptions.loadedData.subscribe(() => {
       if (this.videoService.videoStartTime >= 0 && this.videoService.videoContent.watched) {
         const mediaElement = this.videoPlayer.nativeElement;
-        mediaElement.currentTime = this.videoService.videoStartTime;        
+        mediaElement.currentTime = this.videoService.videoStartTime;
       }
     });
     this.subscriptions.add(loadStartSub);
@@ -232,19 +211,14 @@ export class VideoplayerComponent {
    * @param {any} bitrate - The selected bitrate option.
    */
   setBitrate(bitrate: any) {
-    if (this.dashPlayer) {
-      this.dashPlayer.setQualityFor('video', bitrate.qualityIndex);
-      if (bitrate.label === '1080p') {
-        this.updateVideoSource(this.videoSrc_1080p);
-      } else if (bitrate.label === '720p') {
-        this.updateVideoSource(this.videoSrc_720p);
-      } else if (bitrate.label === '360p') {
-        this.updateVideoSource(this.videoSrc_360p);
-      } else if (bitrate.label === '120p') {
-        this.updateVideoSource(this.videoSrc_120p);
-      }
-    } else {
-      console.error('DASH player instance is not initialized!');
+    if (bitrate.label === '1080p') {
+      this.updateVideoSource(this.videoSrc_1080p);
+    } else if (bitrate.label === '720p') {
+      this.updateVideoSource(this.videoSrc_720p);
+    } else if (bitrate.label === '360p') {
+      this.updateVideoSource(this.videoSrc_360p);
+    } else if (bitrate.label === '120p') {
+      this.updateVideoSource(this.videoSrc_120p);
     }
   }
 
