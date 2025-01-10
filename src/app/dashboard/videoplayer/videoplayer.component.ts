@@ -4,7 +4,6 @@ import { IMediaElement, VgCoreModule, VgApiService, BitrateOptions } from '@vide
 import { VgControlsModule } from '@videogular/ngx-videogular/controls';
 import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
-import * as dashjs from 'dashjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { CommonModule } from '@angular/common';
