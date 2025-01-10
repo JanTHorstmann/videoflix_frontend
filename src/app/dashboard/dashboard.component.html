@@ -2,7 +2,7 @@
 <div class="content" *ngIf="videoService.loadContent">
     <app-previewvideo></app-previewvideo>
 
-    <div class="video-content">
+    <div [style.margin-top]="contentHeight" class="video-content" (scroll)="scaleContentContainer($event)">
         <app-videoslideshow *ngIf="continueWatching" [categoryName]="'Continue Watching'" [videos]="continueWatchingVideos"></app-videoslideshow>
 
         <app-videoslideshow [categoryName]="'New on Videoflix'" [videos]="videos"></app-videoslideshow>

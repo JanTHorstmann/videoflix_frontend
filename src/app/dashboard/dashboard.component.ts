@@ -48,6 +48,12 @@ export class DashboardComponent {
   groupedVideos: { [category: string]: any[] } = {};
 
   /**
+   * Represents the height of the content container as a string, 
+   * This can be dynamically updated based on the content or window size.
+   */
+  contentHeight: string = '';
+
+  /**
    * Constructor to initialize dependencies and load video content.
    * @param http - Angular's HttpClient for making HTTP requests
    * @param videoService - Service for managing video playback and state
@@ -64,6 +70,9 @@ export class DashboardComponent {
     if (session_token) {
       this.videoService.auth_token = session_token;
     }
+    
+    this.contentHeight = `-${window.innerHeight * 0.25}px`
+
     this.loadVideoContent();
     this.loadWatchedVideos();
   }
@@ -180,5 +189,25 @@ export class DashboardComponent {
     this.loadVideoContent();
     this.loadWatchedVideos();
     this.videoService.returnToVideoSelection();
+  }
+
+  /**
+   * Adjusts the vertical position of the content container based on the scroll position.
+   * When scrolling, the container moves upward but does not exceed 50% of the screen height.
+   *
+   * @param {Event} event - The scroll event triggered by the user interaction.
+   */
+  scaleContentContainer(event: Event) {
+    const target = event.target;
+    if (target instanceof HTMLElement) {
+      const scrollTop = target.scrollTop;
+      const halfWindowsHeight = window.innerHeight * 0.5;
+
+      if (scrollTop == 0) {
+        this.contentHeight = `-${halfWindowsHeight / 2}px`;
+      } else {
+        this.contentHeight = `-${halfWindowsHeight}px`;;
+      }
+    }
   }
 }
