@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { VideoplayService } from '../../../services/videoplay.service';
 import { CommonModule } from '@angular/common';
 

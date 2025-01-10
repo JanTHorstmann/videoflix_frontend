@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
-import { AuthService } from '../../../services/auth.service';
 import { NavbarComponent } from '../../navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

@@ -1,6 +1,6 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { VideoplayService } from '../../services/videoplay.service';
-import { IMediaElement, VgCoreModule, VgApiService, BitrateOptions } from '@videogular/ngx-videogular/core';
+import { VgCoreModule, VgApiService, BitrateOptions } from '@videogular/ngx-videogular/core';
 import { VgControlsModule } from '@videogular/ngx-videogular/controls';
 import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
