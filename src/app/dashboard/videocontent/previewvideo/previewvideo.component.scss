@@ -18,7 +18,7 @@
             left: 0;
             top: 0;
             bottom: 0;
-        }        
+        }
 
         video {
             width: 100%;
@@ -44,6 +44,7 @@
         }
 
         button {
+            cursor: pointer;
             @include font-size-color($fw: 700);
             padding: 12px 24px;
             border-radius: 40px;
@@ -53,6 +54,10 @@
             align-items: center;
             justify-content: center;
             gap: 4px;
+
+            &:hover {
+                background-color: #2e3edf99;
+            }
         }
     }
 }

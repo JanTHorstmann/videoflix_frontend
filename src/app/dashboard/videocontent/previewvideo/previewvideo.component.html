@@ -11,7 +11,7 @@
     <span>{{ videoService.previewVideo.description }}</span>
     <div>
 
-      <button>
+      <button (click)="playVideo(videoService.previewVideo)">
         <img src="assets/img/play_arrow.png" alt="">
         Play
       </button>

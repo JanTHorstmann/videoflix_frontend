@@ -56,6 +56,18 @@ export class PreviewvideoComponent {
     })
   }
 
+  /**
+ * Starts playing the selected video. This method updates the video service to 
+ * indicate that the video content should be played and loads the selected video.
+ * 
+ * @param videoElement The video element that is being played.
+ */
+    playVideo(videoElement: any) {      
+      this.videoService.loadContent = false;
+      this.videoService.playVideo = true;
+      this.videoService.videoContent = videoElement;
+    }
+
     /**
    * Lifecycle hook that checks if the video source has changed.
    * If it has, the video is reloaded and played again.
